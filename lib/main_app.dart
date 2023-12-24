@@ -16,10 +16,10 @@ class _MainAppState extends State<MainApp> {
   final List screens = const [
     HomePage(),
     Center(
-      child: Text("Search page"),
+      child: Text("Favorite items page"),
     ),
     Center(
-      child: Text("Rental Cart page"),
+      child: Text("Checkout renatal cart page"),
     ),
     Center(
       child: Text("Account page"),
@@ -52,8 +52,8 @@ class _MainAppState extends State<MainApp> {
             selectedIcon: const Icon(Icons.home_rounded),
           ),
           CustomNavigationBarItem(
-            icon: const Icon(Icons.search_outlined),
-            selectedIcon: const Icon(Icons.search),
+            icon: const Icon(Icons.favorite_outline),
+            selectedIcon: const Icon(Icons.favorite),
           ),
           CustomNavigationBarItem(
             icon: const Icon(Icons.shopping_cart_outlined),
