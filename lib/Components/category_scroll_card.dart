@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-class SmallHorizontalScrollCard extends StatelessWidget {
-  const SmallHorizontalScrollCard({
+class CategoryScrollCard extends StatelessWidget {
+  const CategoryScrollCard({
     super.key,
     required this.isNetworkImage,
     required this.imgCardList,

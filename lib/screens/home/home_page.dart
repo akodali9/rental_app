@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Components/Carousel_widget.dart';
-import 'package:rental_app/Components/small_horizontal_scroll_card.dart';
+import 'package:rental_app/Components/category_scroll_card.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -19,22 +19,22 @@ class HomePage extends StatelessWidget {
       "card3",
       "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
     ],
-    [
-      "card4",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
-    ],
-    [
-      "card5",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
-    ],
-    [
-      "card6",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
-    ],
-    [
-      "card7",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
-    ],
+    // [
+    //   "card4",
+    //   "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+    // ],
+    // [
+    //   "card5",
+    //   "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+    // ],
+    // [
+    //   "card6",
+    //   "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+    // ],
+    // [
+    //   "card7",
+    //   "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+    // ],
   ];
   @override
   Widget build(BuildContext context) {
@@ -49,16 +49,25 @@ class HomePage extends StatelessWidget {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              SmallHorizontalScrollCard(
+              const Padding(
+                padding: EdgeInsets.symmetric(
+                  horizontal: 16.0,
+                  vertical: 8.0,
+                ),
+                child: Text(
+                  "Browse through catgeories 👀",
+                  style: TextStyle(
+                    fontSize: 24,
+                  ),
+                ),
+              ),
+              CategoryScrollCard(
                 imgCardList: categoryImgcardList,
                 isNetworkImage: true,
               ),
               const Carousel(),
-              const Text(
-                "Heading",
-                textAlign: TextAlign.center,
-              )
             ],
           ),
         ),
