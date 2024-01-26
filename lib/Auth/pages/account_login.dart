@@ -1,18 +1,20 @@
 import 'package:flutter/material.dart';
+import 'package:rental_app/Auth/functions/auth_call.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
 
-class Signin extends StatefulWidget {
-  const Signin({
-    super.key, required this.authSwitchCubit,
+class Login extends StatefulWidget {
+  const Login({
+    super.key,
+    required this.authSwitchCubit,
   });
 
   final AuthSwitchCubit authSwitchCubit;
 
   @override
-  State<Signin> createState() => _SigninState();
+  State<Login> createState() => _LoginState();
 }
 
-class _SigninState extends State<Signin> {
+class _LoginState extends State<Login> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
   final textFieldFocusNode = FocusNode();
@@ -82,7 +84,13 @@ class _SigninState extends State<Signin> {
           child: SizedBox(
             width: 120,
             child: IconButton.filledTonal(
-              onPressed: () {},
+              onPressed: () async {
+                await authLogin(
+                  emailController.text,
+                  passwordController.text,
+                  context,
+                );
+              },
               style: const ButtonStyle(
                 enableFeedback: true,
                 elevation: MaterialStatePropertyAll(20.0),

@@ -2,9 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 
 class Carousel extends StatelessWidget {
-  const Carousel({
-    super.key,
-  });
+  const Carousel({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +10,6 @@ class Carousel extends StatelessWidget {
       height: MediaQuery.of(context).size.height / 4,
       width: MediaQuery.of(context).size.width,
       child: Swiper(
-        // physics: const NeverScrollableScrollPhysics(),
         itemCount: 10,
         autoplay: true,
         loop: true,
@@ -27,38 +24,6 @@ class Carousel extends StatelessWidget {
             space: 4,
           ),
         ),
-        // onTap: (value) {
-        //   showDialog(
-        //     context: context,
-        //     builder: (context) => Dialog(
-        //         elevation: 5,
-        //         child: Column(
-        //           mainAxisSize: MainAxisSize.min,
-        //           children: [
-        //             Padding(
-        //               padding: const EdgeInsets.symmetric(
-        //                   horizontal: 100.0, vertical: 200.0),
-        //               child: Text("data $value"),
-        //             ),
-        //             Row(
-        //               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-        //               children: [
-        //                 TextButton(
-        //                   onPressed: () {},
-        //                   child: const Text("View"),
-        //                 ),
-        //                 TextButton(
-        //                   onPressed: () {
-        //                     Navigator.pop(context);
-        //                   },
-        //                   child: const Text("Close"),
-        //                 ),
-        //               ],
-        //             )
-        //           ],
-        //         )),
-        //   );
-        // },
         itemBuilder: (context, index) {
           return Container(
             margin: const EdgeInsets.symmetric(
@@ -66,7 +31,8 @@ class Carousel extends StatelessWidget {
               horizontal: 12.0,
             ),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight,
+              color: Theme.of(context).primaryColorLight ??
+                  Colors.grey, // added null-check
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),

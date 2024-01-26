@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:rental_app/Auth/functions/auth_call.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
 
 class Signup extends StatefulWidget {
@@ -140,7 +141,25 @@ class _SignupState extends State<Signup> {
           child: SizedBox(
             width: 150,
             child: IconButton.filledTonal(
-              onPressed: () {},
+              onPressed: () async {
+                if (passwordController.text == confirmpasswordController.text) {
+                  await authSignup(
+                    nameController.text,
+                    emailController.text,
+                    passwordController.text,
+                    context,
+                  );
+                } else {
+                  showDialog(
+                    context: context,
+                    builder: (context) {
+                      return const Dialog(
+                        child: Text("Passwords do not match"),
+                      );
+                    },
+                  );
+                }
+              },
               style: const ButtonStyle(
                 enableFeedback: true,
                 elevation: MaterialStatePropertyAll(20.0),
