@@ -1,33 +1,38 @@
 import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental_app/Auth/provider/user_cubit.dart';
+import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/screens/home/home_page.dart';
+import 'package:rental_app/screens/account/account_page.dart';
 
-class MainApp extends StatefulWidget {
-  const MainApp({super.key});
+class MainAppExtended extends StatefulWidget {
+  const MainAppExtended({super.key});
   static const String routename = '/';
 
   @override
-  State<MainApp> createState() => _MainAppState();
+  State<MainAppExtended> createState() => _MainAppExtendedState();
 }
 
-class _MainAppState extends State<MainApp> {
+class _MainAppExtendedState extends State<MainAppExtended> {
   int index = 0;
-
-  final List screens = const [
-    HomePage(),
-    Center(
-      child: Text("Favorite items page"),
-    ),
-    Center(
-      child: Text("Checkout renatal cart page"),
-    ),
-    Center(
-      child: Text("Account page"),
-    ),
-  ];
 
   @override
   Widget build(BuildContext context) {
+    UserCubit cubit = context.read<UserCubit>();
+
+    final user = cubit.state;
+
+    List screens = const [
+      HomePage(),
+      Center(
+        child: Text("Favorite items page"),
+      ),
+      Center(
+        child: Text("Checkout renatal cart page"),
+      ),
+      AccountPage(),
+    ];
     return Scaffold(
       extendBody: true,
       body: screens[index],

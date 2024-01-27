@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:rental_app/Auth/functions/auth_call.dart';
+import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
 
 class Signup extends StatefulWidget {
@@ -143,7 +143,7 @@ class _SignupState extends State<Signup> {
             child: IconButton.filledTonal(
               onPressed: () async {
                 if (passwordController.text == confirmpasswordController.text) {
-                  await authSignup(
+                  await AuthService.userSignup(
                     nameController.text,
                     emailController.text,
                     passwordController.text,
@@ -201,7 +201,29 @@ class _SignupState extends State<Signup> {
               ],
             ),
           ),
-        )
+        ),
+        Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: IconButton(
+            onPressed: () {
+              AuthService.guestUserAccess(context);
+            },
+            style: const ButtonStyle(
+              enableFeedback: true,
+              elevation: MaterialStatePropertyAll(20.0),
+            ),
+            icon: const Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Text(
+                  "View as Guest",
+                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200, decoration: TextDecoration.underline,),
+                ),
+                Icon(Icons.arrow_forward),
+              ],
+            ),
+          ),
+        ),
       ],
     );
   }

@@ -6,23 +6,23 @@ class UserModel {
   final String userId;
   final String name;
   final String email;
-  final String password;
+  // final String password;
   final bool isAdmin;
   final List<String> favoriteProducts;
   final List<String> addressList;
   final List<Order> ordersList; // Assuming you have an Order class
-  final num nversion;
+  // final num nversion;
 
   UserModel({
     required this.userId,
     required this.name,
     required this.email,
-    required this.password,
+    // required this.password,
     required this.isAdmin,
     required this.favoriteProducts,
     required this.addressList,
     required this.ordersList,
-    required this.nversion,
+    // required this.nversion,
   });
 
   // Convert UserModel to Map for JSON serialization
@@ -31,12 +31,12 @@ class UserModel {
       'userId': userId,
       'name': name,
       'email': email,
-      'password': password,
+      // 'password': password,
       'isAdmin': isAdmin,
       'favoriteProducts': favoriteProducts,
       'addressList': addressList,
       'ordersList': ordersList.map((order) => order.toMap()).toList(),
-      '__v': nversion,
+      // '__v': nversion,
     };
   }
 
@@ -46,7 +46,7 @@ class UserModel {
       userId: map['userId']?.toString() ?? '',
       name: map['name'] as String,
       email: map['email'] as String,
-      password: map['password'] as String,
+      // password: map['password'] as String,
       isAdmin: map['isAdmin'] as bool,
       favoriteProducts: (map['favoriteProducts'] as List<dynamic>?)
               ?.map((item) => item.toString())
@@ -60,7 +60,7 @@ class UserModel {
               ?.map((order) => Order.fromMap(order as Map<String, dynamic>))
               .toList() ??
           [],
-      nversion: map['__v'] as num,
+      // nversion: map['__v'] as num,
     );
   }
 

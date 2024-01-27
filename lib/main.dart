@@ -6,17 +6,17 @@ import 'package:provider/provider.dart';
 import 'package:rental_app/Auth/auth_page.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
-import 'package:rental_app/main_app.dart';
+import 'package:rental_app/main_extended.dart';
+import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/routes/routes.dart';
-import 'package:rental_app/screens/home/home_page.dart';
 
-void main() {
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
     DeviceOrientation.portraitUp,
   ]).then(
     (value) => runApp(
-      MultiProvider(
+      MultiBlocProvider(
         providers: [
           Provider<AuthSwitchCubit>(
             create: (_) => AuthSwitchCubit(),
@@ -27,24 +27,35 @@ void main() {
             lazy: false,
           ),
         ],
-        child: MaterialApp(
-          theme: ThemeData(
-            fontFamily: GoogleFonts.poppins().fontFamily,
-            brightness: Brightness.light,
-            // colorSchemeSeed: Colors.black,
-            colorSchemeSeed: const Color.fromARGB(255, 130, 219, 255),
-            // bottomNavigationBarTheme:
-            //     BottomNavigationBarThemeData(backgroundColor: Colors.white),
-          ),
-          title: "Rental App",
-          onGenerateRoute: (routeSettings) => generateRoutes(routeSettings),
-          initialRoute: '/auth',
-          routes: {
-            '/': (_) => const MainApp(),
-            '/auth': (_) => const AuthPage(),
-          },
-        ),
+        child: MaterialAPP(),
       ),
     ),
   );
+}
+
+class MaterialAPP extends StatelessWidget {
+  const MaterialAPP({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      theme: ThemeData(
+        fontFamily: GoogleFonts.poppins().fontFamily,
+        brightness: Brightness.light,
+        // colorSchemeSeed: Colors.black,
+        colorSchemeSeed: const Color.fromARGB(255, 130, 219, 255),
+        // bottomNavigationBarTheme:
+        //     BottomNavigationBarThemeData(backgroundColor: Colors.white),
+      ),
+      title: "Rental App",
+      onGenerateRoute: (routeSettings) => generateRoutes(routeSettings),
+      initialRoute: '/' ,
+      routes: {
+        '/': (_) => const MainAppExtended(),
+        '/auth': (_) => const AuthPage(),
+      },
+    );
+  }
 }

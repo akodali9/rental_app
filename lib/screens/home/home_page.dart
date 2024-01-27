@@ -46,17 +46,18 @@ class HomePage extends StatelessWidget {
       if (state is UserInitialState) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       } else if (state is UserLoadedState) {
-        final UserModel? user = state.user;
-        if (user == null) {
-          // Handle the case where user is null
-          return const Scaffold(
-            body: Center(
-              child: Text("User data is null"),
-            ),
-          );
-        }
+        final UserModel user = state.user;
+        // if (user.userId == 'guest') {
+        //   // Handle the case where user is null
+        //   return const Scaffold(
+        //     body: Center(
+        //       child: Text("User data is null"),
+        //     ),
+        //   );
+        // }
 
         return Scaffold(
+          
           appBar: AppBar(
             title: Text(
               "Welcome ${user.name}",
