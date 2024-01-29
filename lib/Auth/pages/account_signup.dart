@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
+import 'package:rental_app/functions/snackbar_showtext.dart';
 
 class Signup extends StatefulWidget {
   const Signup({
@@ -142,22 +143,29 @@ class _SignupState extends State<Signup> {
             width: 150,
             child: IconButton.filledTonal(
               onPressed: () async {
-                if (passwordController.text == confirmpasswordController.text) {
-                  await AuthService.userSignup(
-                    nameController.text,
-                    emailController.text,
-                    passwordController.text,
-                    context,
-                  );
-                } else {
-                  showDialog(
-                    context: context,
-                    builder: (context) {
-                      return const Dialog(
-                        child: Text("Passwords do not match"),
-                      );
-                    },
-                  );
+                if (emailController.text != "" ||
+                    passwordController.text != "" || nameController.text != ''){ 
+                  if (passwordController.text ==
+                      confirmpasswordController.text) {
+                    await AuthService.userSignup(
+                      nameController.text,
+                      emailController.text,
+                      passwordController.text,
+                      context,
+                    );
+                  } else {
+                    showDialog(
+                      context: context,
+                      builder: (context) {
+                        return const Dialog(
+                          child: Text("Passwords do not match"),
+                        );
+                      },
+                    );
+                  }
+                }
+                else{
+                  return showSnackbar(context, "Please fill in your details and passwords!");
                 }
               },
               style: const ButtonStyle(
@@ -196,28 +204,6 @@ class _SignupState extends State<Signup> {
                 Text(
                   "Login",
                   style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200),
-                ),
-                Icon(Icons.arrow_forward),
-              ],
-            ),
-          ),
-        ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () {
-              AuthService.guestUserAccess(context);
-            },
-            style: const ButtonStyle(
-              enableFeedback: true,
-              elevation: MaterialStatePropertyAll(20.0),
-            ),
-            icon: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "View as Guest",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200, decoration: TextDecoration.underline,),
                 ),
                 Icon(Icons.arrow_forward),
               ],

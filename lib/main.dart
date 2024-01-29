@@ -5,10 +5,12 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:rental_app/Auth/auth_page.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
+import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/main_extended.dart';
-import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/routes/routes.dart';
+import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
+import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -26,8 +28,19 @@ void main() async {
             create: (_) => UserCubit(),
             lazy: false,
           ),
+          BlocProvider<UserTokenCubit>(
+            create: (_) => UserTokenCubit(),
+            lazy: false,
+          ),
+          BlocProvider<HomeProductViewCubit>(
+            create: (_) => HomeProductViewCubit(),
+            lazy: false,
+          ),BlocProvider<HomeDataFetchedCubit>(
+            create: (_) => HomeDataFetchedCubit(),
+            lazy: false,
+          ),
         ],
-        child: MaterialAPP(),
+        child: const MaterialAPP(),
       ),
     ),
   );
@@ -51,7 +64,7 @@ class MaterialAPP extends StatelessWidget {
       ),
       title: "Rental App",
       onGenerateRoute: (routeSettings) => generateRoutes(routeSettings),
-      initialRoute: '/' ,
+      initialRoute: '/',
       routes: {
         '/': (_) => const MainAppExtended(),
         '/auth': (_) => const AuthPage(),

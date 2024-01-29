@@ -26,12 +26,12 @@ class _AuthPageState extends State<AuthPage> {
             height: MediaQuery.of(context).size.height - 100,
             child: Center(
               child: authSwitchCubit.state
-                  ? Signup(
+                  ? Login(
+                      authSwitchCubit: authSwitchCubit,
+                    ):Signup(
                       authSwitchCubit: authSwitchCubit,
                     )
-                  : Login(
-                      authSwitchCubit: authSwitchCubit,
-                    ),
+                   ,
             ),
           ),
         ),

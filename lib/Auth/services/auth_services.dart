@@ -1,16 +1,14 @@
-import 'dart:convert'; // Add this import statement for json.encode
+import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental_app/Auth/provider/auth_switch.dart';
+import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/global_variables.dart';
-import 'package:rental_app/models/order_model.dart';
 import 'package:rental_app/models/user_model.dart';
-import 'package:rental_app/widgets/snackbar_showtext.dart';
-
-
+import 'package:rental_app/functions/snackbar_showtext.dart';
 
 class AuthService {
   static void guestUserAccess(BuildContext context) {
@@ -49,7 +47,7 @@ class AuthService {
 
     final userCubit = context.read<UserCubit>();
     userCubit.setUser(user);
-    Navigator.of(context).pop('/');
+    Navigator.of(context).popAndPushNamed('/');
   }
 
   static Future<void> userSignup(
@@ -90,8 +88,6 @@ class AuthService {
     }
   }
 
-  
-
   static Future<void> userLogin(
     String email,
     String password,
@@ -118,6 +114,8 @@ class AuthService {
             UserModel user = UserModel.fromMap(userMap);
             final userCubit = context.read<UserCubit>();
             userCubit.setUser(user);
+            final userTokenCubit = context.read<UserTokenCubit>();
+            userTokenCubit.saveToken(responseBody['token']);
             Navigator.of(context).pop();
             showSnackbar(context, responseBody['Status']);
           } else if (response.statusCode == 401) {

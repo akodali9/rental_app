@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
+import 'package:rental_app/functions/snackbar_showtext.dart';
 
 class Login extends StatefulWidget {
   const Login({
@@ -85,11 +86,16 @@ class _LoginState extends State<Login> {
             width: 120,
             child: IconButton.filledTonal(
               onPressed: () async {
-                await AuthService.userLogin(
-                  emailController.text,
-                  passwordController.text,
-                  context,
-                );
+                if (emailController.text != "" ||
+                    passwordController.text != "") {
+                  await AuthService.userLogin(
+                    emailController.text,
+                    passwordController.text,
+                    context,
+                  );
+                } else {
+                  return showSnackbar(context, "Please enter your credentials!");
+                }
               },
               style: const ButtonStyle(
                 enableFeedback: true,
@@ -133,29 +139,6 @@ class _LoginState extends State<Login> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: IconButton(
-            onPressed: () {
-              AuthService.guestUserAccess(context);
-            },
-            style: const ButtonStyle(
-              enableFeedback: true,
-              elevation: MaterialStatePropertyAll(20.0),
-            ),
-            icon: const Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  "View as Guest",
-                  style: TextStyle(fontSize: 16, fontWeight: FontWeight.w200, decoration: TextDecoration.underline,),
-                ),
-                Icon(Icons.arrow_forward),
-              ],
-            ),
-          ),
-        ),
-      
       ],
     );
   }

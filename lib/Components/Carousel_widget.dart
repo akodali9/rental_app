@@ -2,7 +2,7 @@ import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
 
 class Carousel extends StatelessWidget {
-  const Carousel({Key? key}) : super(key: key);
+  const Carousel({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -31,8 +31,7 @@ class Carousel extends StatelessWidget {
               horizontal: 12.0,
             ),
             decoration: BoxDecoration(
-              color: Theme.of(context).primaryColorLight ??
-                  Colors.grey, // added null-check
+              color: Theme.of(context).primaryColorLight,
               borderRadius: const BorderRadius.all(
                 Radius.circular(10),
               ),

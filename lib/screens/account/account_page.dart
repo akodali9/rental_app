@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:rental_app/Auth/services/auth_services.dart';
+import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/widgets/Snackbar_showtext.dart';
+import 'package:rental_app/functions/alertdialog_customactions.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -24,8 +25,8 @@ class _AccountPageState extends State<AccountPage> {
           final user = state.user;
           if (user.userId == 'guestUserId') {
             return Center(
-              child: IconButton.filledTonal(
-                icon: const Padding(
+              child: TextButton(
+                child: const Padding(
                   padding: EdgeInsets.all(2.0),
                   child: Text(
                     'Login/Signup to continue',
@@ -121,14 +122,33 @@ class _AccountPageState extends State<AccountPage> {
                     ),
                     IconButton(
                       style: ButtonStyle(
-                        backgroundColor: MaterialStatePropertyAll(Colors.red[100]),
+                        backgroundColor:
+                            MaterialStatePropertyAll(Colors.red[100]),
                       ),
                       onPressed: () {
-                        UserCubit userCubit = context.read<UserCubit>();
-                        userCubit.removeUser();
-                        showSnackbar(context, "You have been Successfully logged out");
+                        showAlertDialog(context, "Do you want to Logout?", [
+                          "Yes",
+                          "No"
+                        ], [
+                          () {
+                            Navigator.of(context).pop();
+                            UserCubit userCubit = context.read<UserCubit>();
+                            userCubit.removeUser();
+                            UserTokenCubit userTokenCubit =
+                                context.read<UserTokenCubit>();
+                            userTokenCubit.deleteToken();
+                            showSnackbar(context,
+                                "You have been Successfully logged out");
+                          },
+                          () {
+                            Navigator.of(context).pop();
+                          }
+                        ]);
                       },
-                      icon: const Text('  Logout  ', style: TextStyle(fontSize: 18),),
+                      icon: const Text(
+                        '  Logout  ',
+                        style: TextStyle(fontSize: 18),
+                      ),
                     ),
                     const SizedBox(
                       height: 80,
