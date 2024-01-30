@@ -1,17 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Components/carousel_widget.dart';
 import 'package:rental_app/Components/category_scroll_card.dart';
 import 'package:rental_app/functions/capitalize_first_letter.dart';
-import 'package:rental_app/functions/to_camel_case.dart';
 import 'package:rental_app/models/product_model.dart';
 import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
 import 'package:rental_app/screens/home/services/home_services.dart';
+import 'package:rental_app/screens/product_view_page/product_detailedView.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -73,6 +72,16 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    Future<void> onrefresh() async {
+      HomeDataFetchedCubit homeDataFetchState =
+          context.read<HomeDataFetchedCubit>();
+      homeDataFetchState.falseStatus();
+      final productHomeViewCubit = context.read<HomeProductViewCubit>();
+      productHomeViewCubit.clearProducts(); //
+      HomeServices.clearFecthHistory(fetchtoken());
+      fetchRandomProducts();
+    }
+
     return BlocBuilder<UserCubit, UserState>(builder: (context, state) {
       if (state is UserInitialState) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
@@ -97,141 +106,175 @@ class _HomePageState extends State<HomePage> {
             ),
             centerTitle: true,
           ),
-          body: SafeArea(
-            child: CustomScrollView(
-              slivers: [
-                SliverToBoxAdapter(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      const Padding(
-                        padding: EdgeInsets.symmetric(
-                          horizontal: 16.0,
-                          vertical: 8.0,
-                        ),
-                        child: Text(
-                          "Categories",
-                          style: TextStyle(
-                            fontSize: 20,
-                            fontWeight: FontWeight.w500,
+          body: RefreshIndicator(
+            triggerMode: RefreshIndicatorTriggerMode.onEdge,
+            onRefresh: onrefresh,
+            child: SafeArea(
+              child: CustomScrollView(
+                slivers: [
+                  SliverToBoxAdapter(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.symmetric(
+                            horizontal: 16.0,
+                            vertical: 8.0,
+                          ),
+                          child: Text(
+                            "Categories",
+                            style: TextStyle(
+                              fontSize: 20,
+                              fontWeight: FontWeight.bold,
+                            ),
                           ),
                         ),
-                      ),
-                      CategoryScrollCard(
-                        imgCardList: HomePage.categoryImgcardList,
-                        isNetworkImage: true,
-                      ),
-                    ],
-                  ),
-                ),
-                const SliverToBoxAdapter(
-                  child: Carousel(),
-                ),
-                const SliverToBoxAdapter(
-                  child: Padding(
-                    padding: EdgeInsets.only(left: 16.0, top: 16.0),
-                    child: Text(
-                      "New Products",
-                      style:
-                          TextStyle(fontSize: 24, fontWeight: FontWeight.w700),
+                        CategoryScrollCard(
+                          imgCardList: HomePage.categoryImgcardList,
+                          isNetworkImage: true,
+                        ),
+                      ],
                     ),
                   ),
-                ),
-                BlocBuilder<HomeProductViewCubit, HomeProductViewState>(
-                  builder: (context, state) {
-                    if (state is HomeProductViewInitialState) {
-                      return const SliverToBoxAdapter(
-                        child: Center(
-                          child: LinearProgressIndicator(),
-                        ),
-                      );
-                    } else if (state is HomeProductViewLoadedState) {
-                      List<Product> products = state.products;
-                      return SliverList(
-                        delegate: SliverChildBuilderDelegate(
-                          (context, index) {
-                            final binaryData =
-                                products[index].images[index].data;
-                            return InkWell(
-                              onTap: () {},
-                              child: Container(
-                                margin: const EdgeInsets.all(8.0),
-                                padding: const EdgeInsets.all(8.0),
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(8.0),
-                                  color: Theme.of(context).secondaryHeaderColor,
-                                ),
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    Image.memory(
-                                      binaryData,
-                                    ),
-                                    const SizedBox(
-                                      height: 10,
-                                    ),
-                                    Text(
-                                      capitalizeFirstLetter( products[index].name),
-                                      style: const TextStyle(
-                                          fontSize: 24,
-                                          fontWeight: FontWeight.bold),
-                                    ),
-                                    Text(products[index].description),
-                                    // Text(
-                                    //     'Product Id: ${products[index].productId}'),
-                                    Text(
-                                        'Category: ${products[index].category}'),
-                                    Text('Brand: ${products[index].brand}'),
-                                    products[index].model != ""
-                                        ? Text(
-                                            'model: ${products[index].model}')
-                                        : const SizedBox(),
-                                    products[index].size != ""
-                                        ? Text('Size: ${products[index].size}')
-                                        : const SizedBox(),
-                                    Text('Price: ${products[index].price}'),
-                                    Text('Color: ${products[index].color}'),
-                                    products[index].material != ""
-                                        ? Text(
-                                            'Material: ${products[index].material}')
-                                        : const SizedBox(),
-                                    // Text(
-                                    //     'Item Count: ${products[index].itemCount}'),
-                                  ],
-                                ),
-                              ),
-                            );
-                          },
-                          childCount: products.length,
-                        ),
-                      );
-                    } else {
-                      return const SliverToBoxAdapter(
-                        child: Center(
-                          child: Text("Unknown State"),
-                        ),
-                      );
-                    }
-                  },
-                ),
-                SliverToBoxAdapter(
-                  child: BlocBuilder<HomeDataFetchedCubit, HomeDataFetchState>(
+                  const SliverToBoxAdapter(
+                    child: Carousel(),
+                  ),
+                  const SliverToBoxAdapter(
+                    child: Padding(
+                      padding: EdgeInsets.only(left: 16.0, top: 16.0),
+                      child: Text(
+                        "New Products",
+                        style: TextStyle(
+                            fontSize: 24, fontWeight: FontWeight.w700),
+                      ),
+                    ),
+                  ),
+                  BlocBuilder<HomeProductViewCubit, HomeProductViewState>(
                     builder: (context, state) {
-                      if (state is HomeDataFetchInitialState) {
-                        return TextButton(
-                          child: const Text('Load More'),
-                          onPressed: () {
-                            HomeServices.fetchRandomProducts(
-                                2, fetchtoken(), context);
-                          },
+                      if (state is HomeProductViewInitialState) {
+                        return const SliverToBoxAdapter(
+                          child: Center(
+                            child: LinearProgressIndicator(),
+                          ),
+                        );
+                      } else if (state is HomeProductViewLoadedState) {
+                        List<Product> products = state.products;
+                        return SliverList(
+                          delegate: SliverChildBuilderDelegate(
+                            (context, index) {
+                              final binaryData = products[index].images[0].data;
+                              return InkWell(
+                                onTap: () {
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (context) => ProductDetailedView(
+                                          product: products[index]),
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  margin: const EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(8.0),
+                                    color:
+                                        Theme.of(context).secondaryHeaderColor,
+                                  ),
+                                  child: Column(
+                                    children: [
+                                      Image.memory(
+                                        binaryData,
+                                      ),
+                                      const SizedBox(
+                                        height: 10,
+                                      ),
+                                      Row(
+                                        children: [
+                                          Expanded(
+                                            child: Column(
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  capitalizeFirstLetter(
+                                                      products[index].name),
+                                                  style: const TextStyle(
+                                                      fontSize: 20,
+                                                      fontWeight:
+                                                          FontWeight.bold),
+                                                ),
+                                                Text(
+                                                    'Brand: ${products[index].brand}'),
+                                                Text(
+                                                    'Color: ${products[index].color}'),
+                                              ],
+                                            ),
+                                          ),
+                                          Card(
+                                              elevation: 3,
+                                              child: SizedBox(
+                                                  height: 80,
+                                                  width: 80,
+                                                  child: Center(
+                                                      child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .center,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceEvenly,
+                                                    children: [
+                                                      Text(
+                                                        '${products[index].price} \$',
+                                                        style: const TextStyle(
+                                                          fontSize: 20,
+                                                        ),
+                                                      ),
+                                                      const Divider(
+                                                        height: 0,
+                                                      ),
+                                                      const Text('Month'),
+                                                    ],
+                                                  )))),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              );
+                            },
+                            childCount: products.length,
+                          ),
                         );
                       } else {
-                        return const SizedBox();
+                        return const SliverToBoxAdapter(
+                          child: Center(
+                            child: Text("Unknown State"),
+                          ),
+                        );
                       }
                     },
                   ),
-                ),
-              ],
+                  SliverToBoxAdapter(
+                    child:
+                        BlocBuilder<HomeDataFetchedCubit, HomeDataFetchState>(
+                      builder: (context, state) {
+                        if (state is HomeDataFetchInitialState) {
+                          return TextButton(
+                            child: const Text('Load More'),
+                            onPressed: () {
+                              HomeServices.fetchRandomProducts(
+                                  2, fetchtoken(), context);
+                            },
+                          );
+                        } else {
+                          return const SizedBox();
+                        }
+                      },
+                    ),
+                  ),
+                ],
+              ),
             ),
           ),
         );

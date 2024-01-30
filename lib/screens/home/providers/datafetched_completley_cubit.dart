@@ -8,7 +8,7 @@ class HomeDataFetchedCubit extends Cubit<HomeDataFetchState> {
   }
 
   void falseStatus() {
-    emit(HomeDataFetchLoadedState(false));
+    emit(HomeDataFetchInitialState());
   }
 }
 

@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
-import 'package:rental_app/widgets/Snackbar_showtext.dart';
+import 'package:rental_app/functions/Snackbar_showtext.dart';
 import 'package:rental_app/functions/alertdialog_customactions.dart';
 
 class AccountPage extends StatefulWidget {
