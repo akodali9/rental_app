@@ -11,29 +11,7 @@ import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/functions/snackbar_showtext.dart';
 
 class AuthService {
-  static void guestUserAccess(BuildContext context) {
-    // List<Item> items = [
-    //   Item(productId: '1', productName: 'Product A', quantity: 2, price: 10.99),
-    //   Item(productId: '2', productName: 'Product B', quantity: 1, price: 5.99),
-    //   Item(productId: '3', productName: 'Product C', quantity: 3, price: 8.99),
-    // ];
-    // double calculateTotalAmount(List<Item> items) {
-    //   return items.fold(
-    //       0, (total, item) => total + (item.quantity * item.price));
-    // }
-
-    // List<Order> orders = [
-    //   Order(
-    //     orderId: '123456',
-    //     customerId: '7890',
-    //     items: items,
-    //     totalAmount: calculateTotalAmount(items),
-    //     customerAddress: '123 Main St, Cityville',
-    //     status: 'Pending',
-    //     createdAt: DateTime.now(),
-    //     returnStatus: false,
-    //   ),
-    // ];
+  static void guestUserAccess(BuildContext context) async {
 
     UserModel user = UserModel(
       userId: 'guestUserId',
@@ -45,9 +23,23 @@ class AuthService {
       ordersList: [],
     );
 
-    final userCubit = context.read<UserCubit>();
-    userCubit.setUser(user);
-    Navigator.of(context).popAndPushNamed('/');
+    final response = await http.get(
+      Uri.parse('$uri/users/guestLogin'),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = json.decode(response.body);
+      if (context.mounted) {
+        final userCubit = context.read<UserCubit>();
+        userCubit.setUser(user);
+        final userTokenCubit = context.read<UserTokenCubit>();
+        userTokenCubit.saveToken(responseBody['token']);
+        Navigator.of(context).popAndPushNamed('/');
+      }
+    }
   }
 
   static Future<void> userSignup(

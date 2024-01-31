@@ -8,11 +8,10 @@ import 'package:rental_app/Auth/provider/auth_switch.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/main_extended.dart';
-import 'package:rental_app/models/product_model.dart';
 import 'package:rental_app/routes/routes.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
-import 'package:rental_app/screens/product_view_page/product_detailedView.dart';
+import 'package:rental_app/screens/search/providers/searched_products_cubit.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -37,8 +36,12 @@ void main() async {
           BlocProvider<HomeProductViewCubit>(
             create: (_) => HomeProductViewCubit(),
             lazy: false,
-          ),BlocProvider<HomeDataFetchedCubit>(
+          ),
+          BlocProvider<HomeDataFetchedCubit>(
             create: (_) => HomeDataFetchedCubit(),
+            lazy: false,
+          ),BlocProvider<SearchedProductCubit>(
+            create: (_) => SearchedProductCubit(),
             lazy: false,
           ),
         ],

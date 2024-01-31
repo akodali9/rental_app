@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
-import 'package:rental_app/screens/home/pages/home_page.dart';
+import 'package:rental_app/screens/home/home_page.dart';
 import 'package:rental_app/screens/account/account_page.dart';
 
 class MainAppExtended extends StatefulWidget {
@@ -142,7 +142,7 @@ class _MainAppExtendedState extends State<MainAppExtended> {
             ),
           );
         }
-        return Scaffold(
+        return const Scaffold(
           body: Center(child: Text("Internal Error")),
         );
       },

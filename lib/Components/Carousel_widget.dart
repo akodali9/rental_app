@@ -17,13 +17,43 @@ class Carousel extends StatelessWidget {
         containerHeight: 100,
         containerWidth: 100,
         scrollDirection: Axis.horizontal,
-        pagination: const SwiperPagination(
-          builder: DotSwiperPaginationBuilder(
-            activeSize: 8,
-            size: 6,
-            space: 4,
-          ),
-        ),
+        pagination: SwiperPagination(
+          builder: SwiperPagination(
+                  builder: SwiperCustomPagination(
+                    builder: (BuildContext context, SwiperPluginConfig config) {
+                      return Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: config.itemCount * 16,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: config.itemCount > 0
+                                ? List.generate(
+                                    config.itemCount,
+                                    (index) => Container(
+                                      margin: const EdgeInsets.all(4.0),
+                                      width: 6.0,
+                                      height: 6.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: index == config.activeIndex
+                                            ? Colors.white
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  )
+                                : [],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+        ), 
         itemBuilder: (context, index) {
           return Container(
             margin: const EdgeInsets.symmetric(

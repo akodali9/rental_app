@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental_app/global_variables.dart';
 import 'package:rental_app/models/product_model.dart';
-import 'package:rental_app/screens/home/pages/home_page.dart';
+import 'package:rental_app/screens/home/home_page.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
 import 'package:rental_app/functions/snackbar_showtext.dart';
@@ -19,7 +19,7 @@ class HomeServices {
         headers: {
           'Authorization': userToken,
           'Content-Type':
-              'application/json', // Adjust content type based on your server's expectations
+              'application/json',
         },
       );
     } catch (error) {
@@ -35,7 +35,7 @@ class HomeServices {
         headers: {
           'Authorization': token,
           'Content-Type':
-              'application/json', // Adjust content type based on your server's expectations
+              'application/json', 
         },
       );
 
@@ -43,7 +43,6 @@ class HomeServices {
         final Map<String, dynamic> responseBody = json.decode(response.body);
         final List<dynamic> productsData = responseBody['products'];
 
-        // Convert the list of dynamic data to a list of Product models
         List<Product> products = productsData
             .map((productData) => Product.fromJson(productData))
             .toList();
@@ -51,12 +50,11 @@ class HomeServices {
         if (context.mounted) {
           final productHomeViewCubit = context.read<HomeProductViewCubit>();
           productHomeViewCubit.loadProducts(
-              products); // Assuming you have a method in your Cubit to load products
+              products); 
         }
         HomePage.dataFetched = true;
         return products;
       } else if (response.statusCode == 404) {
-        // print("You have reached the end!");
 
         if (context.mounted) {
           HomeDataFetchedCubit homeDataFetchState =

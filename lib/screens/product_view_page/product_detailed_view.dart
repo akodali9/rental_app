@@ -31,7 +31,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
         slivers: [
           SliverToBoxAdapter(
             child: SizedBox(
-              height: MediaQuery.of(context).size.height / 3.5,
+              height: MediaQuery.of(context).size.height / 4,
               width: MediaQuery.of(context).size.width,
               child: Swiper(
                 itemCount: widget.product.images.length,
@@ -39,25 +39,48 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                 loop: true,
                 autoplayDisableOnInteraction: true,
                 scrollDirection: Axis.horizontal,
-                // pagination: const SwiperPagination(
-                //   builder: DotSwiperPaginationBuilder(
-                //     color: Colors.black12,
-                //     activeSize: 8,
-                //     size: 6,
-                //     space: 4,
-                //   ),
-                // ),
-
+                pagination: SwiperPagination(
+                  builder: SwiperCustomPagination(
+                    builder: (BuildContext context, SwiperPluginConfig config) {
+                      return Align(
+                        alignment: Alignment.bottomCenter,
+                        child: Container(
+                          width: config.itemCount * 16,
+                          decoration: BoxDecoration(
+                            color: Colors.black.withOpacity(0.5),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: config.itemCount > 0
+                                ? List.generate(
+                                    config.itemCount,
+                                    (index) => Container(
+                                      margin: const EdgeInsets.all(4.0),
+                                      width: 6.0,
+                                      height: 6.0,
+                                      decoration: BoxDecoration(
+                                        shape: BoxShape.circle,
+                                        color: index == config.activeIndex
+                                            ? Colors.white
+                                            : Colors.grey,
+                                      ),
+                                    ),
+                                  )
+                                : [],
+                          ),
+                        ),
+                      );
+                    },
+                  ),
+                ),
                 itemBuilder: (context, index) {
-                  return Padding(
-                    padding: const EdgeInsets.all(4.0),
-                    child: Card(
-                      elevation: 5,
-                      child: Image.memory(
-                        widget.product.images[index].data,
-                        fit: BoxFit.cover,
-                        width: MediaQuery.of(context).size.width,
-                      ),
+                  return Card(
+                    elevation: 5,
+                    child: Image.memory(
+                      widget.product.images[index].data,
+                      fit: BoxFit.cover,
+                      width: MediaQuery.of(context).size.width,
                     ),
                   );
                 },
@@ -70,7 +93,9 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  SizedBox(height: 10,),
+                  const SizedBox(
+                    height: 20,
+                  ),
                   Center(
                     child: Text(
                       capitalizeFirstLetter(widget.product.name),
@@ -82,7 +107,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                   Text(
                     capitalizeFirstLetter(
                         '${widget.product.description}hhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhhh'),
-                    maxLines: showMoreDetails ? 20 : null,
+                    maxLines: showMoreDetails ? 20 : 2,
                     overflow: TextOverflow.ellipsis,
                     style: const TextStyle(
                       fontSize: 16,
@@ -215,7 +240,10 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                         ),
                         icon: const Text(
                           "Add to Cart",
-                          style: TextStyle(fontSize: 24),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         )),
                   ),
                   Container(
@@ -234,7 +262,10 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                                     borderRadius: BorderRadius.circular(10)))),
                         icon: const Text(
                           "Rent now",
-                          style: TextStyle(fontSize: 24),
+                          style: TextStyle(
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
                         )),
                   ),
                   const SizedBox(
