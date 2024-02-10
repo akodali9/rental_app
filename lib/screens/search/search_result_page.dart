@@ -62,7 +62,7 @@ class _SearchResultPageState extends State<SearchResultPage> {
             return const LinearProgressIndicator();
           } else if (state is SearchedProductLoadedState) {
             List<Product> searchedProducts = state.searchedProducts;
-            if (searchedProducts == []) {
+            if (searchedProducts.isEmpty) {
               return const Center(
               child: Text('No product has been found!'),
             ); 

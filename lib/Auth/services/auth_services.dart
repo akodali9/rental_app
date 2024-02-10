@@ -6,13 +6,27 @@ import 'package:http/http.dart' as http;
 import 'package:rental_app/Auth/provider/auth_switch.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
+import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/global_variables.dart';
 import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/functions/snackbar_showtext.dart';
 
 class AuthService {
-  static void guestUserAccess(BuildContext context) async {
+  static void tokenVerify(BuildContext context, String token) async {
+    final response = await http.get(
+      Uri.parse('$uri/users/tokenverify'),
+      headers: {
+        "Authorization": token,
+        "Content-Type": "application/json",
+      },
+    );
 
+    if (response.statusCode == 401) {
+      if (context.mounted) logoutuser(context);
+    }
+  }
+
+  static void guestUserAccess(BuildContext context) async {
     UserModel user = UserModel(
       userId: 'guestUserId',
       name: 'Guest User',

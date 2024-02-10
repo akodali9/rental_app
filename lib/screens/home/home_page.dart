@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
+import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Components/carousel_widget.dart';
 import 'package:rental_app/Components/category_scroll_card.dart';
 import 'package:rental_app/Components/sliver_product_display.dart';
@@ -18,24 +19,24 @@ class HomePage extends StatefulWidget {
 
   static List<List<String>> categoryImgcardList = [
     [
-      "card1",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+      "test",
+      "assets/images/test.jpeg",
     ],
     [
-      "card2",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+      "test",
+      "assets/images/test.jpeg",
     ],
     [
-      "card3",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+      "test",
+      "assets/images/test.jpeg",
     ],
     [
-      "card4",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+      "test",
+      "assets/images/test.jpeg",
     ],
     [
-      "card5",
-      "https://cdn-images-1.medium.com/v2/resize:fit:1200/1*5-aoK8IBmXve5whBQM90GA.png"
+      "test",
+      "assets/images/test.jpeg",
     ],
   ];
 
@@ -51,16 +52,18 @@ class _HomePageState extends State<HomePage> {
     super.initState();
 
     if (!HomePage.dataFetched) {
-      HomeServices.clearFecthHistory(fetchtoken());
+      HomeServices.clearFetchHistory(fetchtoken());
       fetchRandomProducts();
     }
   }
 
   String fetchtoken() {
     final userTokenCubit = context.read<UserTokenCubit>();
+
     final String userToken = userTokenCubit.state is UserTokenLoadedState
         ? (userTokenCubit.state as UserTokenLoadedState).token
         : '';
+
     return userToken;
   }
 
@@ -74,12 +77,15 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     Future<void> onrefresh() async {
+      setState(() {
+        HomePage.dataFetched = false;
+      });
       HomeDataFetchedCubit homeDataFetchState =
           context.read<HomeDataFetchedCubit>();
       homeDataFetchState.falseStatus();
       final productHomeViewCubit = context.read<HomeProductViewCubit>();
       productHomeViewCubit.clearProducts(); //
-      HomeServices.clearFecthHistory(fetchtoken());
+      HomeServices.clearFetchHistory(fetchtoken());
       fetchRandomProducts();
     }
 
@@ -88,6 +94,7 @@ class _HomePageState extends State<HomePage> {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       } else if (state is UserLoadedState) {
         // final UserModel user = state.user;
+
         // if (user.userId == 'guest') {
         //   // Handle the case where user is null
         //   return const Scaffold(
@@ -99,32 +106,27 @@ class _HomePageState extends State<HomePage> {
 
         return Scaffold(
           appBar: AppBar(
-            scrolledUnderElevation: 0,
-            toolbarHeight: 60,
-            title: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 4.0),
-              child: TextFormField(
-                readOnly: true,
-                onTap: () {
-                  Navigator.of(context).push(MaterialPageRoute(
-                    builder: (context) => const SearchResultPage(),
-                  ));
-                },
-                
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(8.0),
-                  filled: true,
-                  border: OutlineInputBorder(
-                    borderRadius: BorderRadius.circular(10.0),
-                  ),
-                  hintText: 'Search',
-                  prefixIcon: const Icon(Icons.search),
+            title: TextFormField(
+              readOnly: true,
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                  builder: (context) => const SearchResultPage(),
+                ));
+              },
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(8.0),
+                filled: true,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10.0),
                 ),
+                hintText: 'Search',
+                prefixIcon: const Icon(Icons.search),
               ),
             ),
           ),
           body: BlocBuilder<HomeProductViewCubit, HomeProductViewState>(
               builder: (context, state) {
+            AuthService.tokenVerify(context, fetchtoken());
             if (state is HomeProductViewInitialState) {
               return const LinearProgressIndicator();
             } else if (state is HomeProductViewLoadedState) {
@@ -135,6 +137,27 @@ class _HomePageState extends State<HomePage> {
                 child: SafeArea(
                   child: CustomScrollView(
                     slivers: [
+                      const SliverToBoxAdapter(
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                              padding: EdgeInsets.symmetric(
+                                horizontal: 16.0,
+                                vertical: 8.0,
+                              ),
+                              child: Text(
+                                "Offers & Deals",
+                                style: TextStyle(
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                            ),
+                            Carousel(),
+                          ],
+                        ),
+                      ),
                       SliverToBoxAdapter(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -145,22 +168,19 @@ class _HomePageState extends State<HomePage> {
                                 vertical: 8.0,
                               ),
                               child: Text(
-                                "Categories",
+                                "Popular Categories",
                                 style: TextStyle(
                                   fontSize: 20,
-                                  fontWeight: FontWeight.bold,
+                                  fontWeight: FontWeight.w700,
                                 ),
                               ),
                             ),
                             CategoryScrollCard(
                               imgCardList: HomePage.categoryImgcardList,
-                              isNetworkImage: true,
+                              isNetworkImage: false,
                             ),
                           ],
                         ),
-                      ),
-                      const SliverToBoxAdapter(
-                        child: Carousel(),
                       ),
                       const SliverToBoxAdapter(
                         child: Padding(
@@ -168,7 +188,7 @@ class _HomePageState extends State<HomePage> {
                           child: Text(
                             "New Products",
                             style: TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.w700),
+                                fontSize: 20, fontWeight: FontWeight.w700),
                           ),
                         ),
                       ),

@@ -13,42 +13,39 @@ class CategoryScrollCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 130,
+      height: 105,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: imgCardList.length,
-        itemBuilder: (context, index) => Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 6.0),
+        itemBuilder: (context, index) => Center(
           child: Container(
-            height: 120,
-            width: 120,
-            margin: const EdgeInsets.symmetric(horizontal: 6.0, vertical: 6.0),
+            width: 70,
+            margin: const EdgeInsets.symmetric(horizontal: 8.0, vertical: 6.0),
             decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(16.0),
-                color: Colors.black12),
+              borderRadius: BorderRadius.circular(double.infinity),
+            ),
             child: InkWell(
               onTap: () {},
-              child: Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceAround,
-                  children: [
-                    isNetworkImage
-                        ? Image.network(
-                            imgCardList[index][1],
-                            height: 80,
-                          )
-                        : Image.asset(
-                            imgCardList[index][1],
-                            height: 80,
-                          ),
-                    Text(
-                      imgCardList[index][0],
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w400,
+              child: Column(children: [
+                isNetworkImage
+                    ? Image.network(
+                        imgCardList[index][1],
+                      )
+                    : ClipRRect(
+                        borderRadius: BorderRadius.circular(50.0),
+                        child: Image.asset(
+                          imgCardList[index][1],
+                        ),
                       ),
-                    )
-                  ]),
+                Text(
+                  imgCardList[index][0],
+                  textAlign: TextAlign.center,
+                  style: const TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.w400,
+                  ),
+                )
+              ]),
             ),
           ),
         ),

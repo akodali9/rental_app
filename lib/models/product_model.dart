@@ -14,6 +14,7 @@ class Product {
   final String model;
   final String size;
   final String material;
+  final String otherDetails;
 
   Product({
     required this.productId,
@@ -28,6 +29,7 @@ class Product {
     required this.model,
     required this.size,
     required this.material,
+    required this.otherDetails,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) {
@@ -46,6 +48,7 @@ class Product {
       model: json['model'] ?? '',
       size: json['size'] ?? '',
       material: json['material'] ?? '',
+      otherDetails: json['otherDetails'] ?? '',
     );
   }
 }

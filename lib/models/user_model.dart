@@ -11,7 +11,7 @@ class UserModel {
   final bool isAdmin;
   final List<String> favoriteProducts;
   final List<String> addressList;
-  final List<Order> ordersList; // Assuming you have an Order class
+  final List<Order> ordersList;
   // final num nversion;
 
   UserModel({
@@ -63,6 +63,16 @@ class UserModel {
           [],
       // nversion: map['__v'] as num,
     );
+  }
+
+  void toggleFavoriteProduct(String productId) {
+    if (favoriteProducts.contains(productId)) {
+      // If the product is already in the favorites, remove it
+      favoriteProducts.remove(productId);
+    } else {
+      // If the product is not in the favorites, add it
+      favoriteProducts.add(productId);
+    }
   }
 
   // Convert UserModel to JSON string

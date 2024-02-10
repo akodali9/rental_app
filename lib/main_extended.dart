@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
+import 'package:rental_app/screens/cart/cart_page.dart';
+import 'package:rental_app/screens/favorite/favorite_page.dart';
 import 'package:rental_app/screens/home/home_page.dart';
 import 'package:rental_app/screens/account/account_page.dart';
 
@@ -21,12 +23,8 @@ class _MainAppExtendedState extends State<MainAppExtended> {
   Widget build(BuildContext context) {
     List screens = const [
       HomePage(),
-      Center(
-        child: Text("Favorite items page"),
-      ),
-      Center(
-        child: Text("Checkout renatal cart page"),
-      ),
+      FavoritePage(),
+      CartPage(),
       AccountPage(),
     ];
     return BlocBuilder<UserCubit, UserState>(
@@ -109,9 +107,8 @@ class _MainAppExtendedState extends State<MainAppExtended> {
             bottomNavigationBar: CustomNavigationBar(
               iconSize: 26,
               backgroundColor: Theme.of(context).scaffoldBackgroundColor,
-              selectedColor: Theme.of(context).primaryColor,
-              strokeColor: Theme.of(context).primaryColor,
-              // unSelectedColor: Theme.of(context).dividerColor,
+              selectedColor: Theme.of(context).primaryColorDark,
+              strokeColor: Theme.of(context).primaryColorDark,
               borderRadius: const Radius.circular(20),
               elevation: 20,
               bubbleCurve: Curves.easeInOut,

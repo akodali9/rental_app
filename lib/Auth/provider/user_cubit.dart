@@ -30,24 +30,35 @@ class UserCubit extends Cubit<UserState> {
         final user = UserModel.fromJson(userJson);
 
         setUser(user);
-
       }
     } catch (error) {
       print('Error loading user data: $error');
     }
   }
+
   void removeUser() {
     secureStorage.delete(key: 'user');
-
+    secureStorage.delete(key: 'usertoken');
     emit(UserInitialState());
   }
 
-  // UserModel getCurrentUser() {
-  //   if (state is UserLoadedState) {
-  //     return (state as UserLoadedState).user;
-  //   }
-  //   return guestUser();
-  // }
+  Future<void> toggleFavoriteProduct(String productId) async {
+    try {
+      if (state is UserLoadedState) {
+        final UserModel user = (state as UserLoadedState).user;
+
+        // Toggle favorite status in the user model
+        user.toggleFavoriteProduct(productId);
+
+        // Save the updated user data
+        await setUser(user);
+
+        emit(UserLoadedState(user)); // Emit the updated state
+      }
+    } catch (error) {
+      print('Error toggling favorite product: $error');
+    }
+  }
 }
 
 abstract class UserState {}

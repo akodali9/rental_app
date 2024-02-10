@@ -10,7 +10,7 @@ import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart'
 import 'package:rental_app/functions/snackbar_showtext.dart';
 
 class HomeServices {
-  static void clearFecthHistory(String userToken) {
+  static void clearFetchHistory(String userToken) {
     try {
       http.get(
         Uri.parse(
@@ -18,8 +18,7 @@ class HomeServices {
         ),
         headers: {
           'Authorization': userToken,
-          'Content-Type':
-              'application/json',
+          'Content-Type': 'application/json',
         },
       );
     } catch (error) {
@@ -34,8 +33,7 @@ class HomeServices {
         Uri.parse('$uri/product/fetchRandom/$count'),
         headers: {
           'Authorization': token,
-          'Content-Type':
-              'application/json', 
+          'Content-Type': 'application/json',
         },
       );
 
@@ -49,14 +47,13 @@ class HomeServices {
 
         if (context.mounted) {
           final productHomeViewCubit = context.read<HomeProductViewCubit>();
-          productHomeViewCubit.loadProducts(
-              products); 
+          productHomeViewCubit.loadProducts(products);
         }
         HomePage.dataFetched = true;
         return products;
       } else if (response.statusCode == 404) {
-
         if (context.mounted) {
+          print("You have reached the end!");
           HomeDataFetchedCubit homeDataFetchState =
               context.read<HomeDataFetchedCubit>();
           homeDataFetchState.trueStatus();

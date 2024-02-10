@@ -9,6 +9,7 @@ import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/main_extended.dart';
 import 'package:rental_app/routes/routes.dart';
+import 'package:rental_app/screens/favorite/providers/favorite_page_cubit.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
 import 'package:rental_app/screens/search/providers/searched_products_cubit.dart';
@@ -40,8 +41,13 @@ void main() async {
           BlocProvider<HomeDataFetchedCubit>(
             create: (_) => HomeDataFetchedCubit(),
             lazy: false,
-          ),BlocProvider<SearchedProductCubit>(
+          ),
+          BlocProvider<SearchedProductCubit>(
             create: (_) => SearchedProductCubit(),
+            lazy: false,
+          ),
+          BlocProvider<FavoriteProductPageCubit>(
+            create: (_) => FavoriteProductPageCubit(),
             lazy: false,
           ),
         ],
@@ -62,10 +68,7 @@ class MaterialAPP extends StatelessWidget {
       theme: ThemeData(
         fontFamily: GoogleFonts.poppins().fontFamily,
         brightness: Brightness.light,
-        // colorSchemeSeed: Colors.black,
-        colorSchemeSeed: const Color.fromARGB(255, 130, 219, 255),
-        // bottomNavigationBarTheme:
-        //     BottomNavigationBarThemeData(backgroundColor: Colors.white),
+        colorSchemeSeed: Colors.blue[50],
       ),
       title: "Rental App",
       onGenerateRoute: (routeSettings) => generateRoutes(routeSettings),
