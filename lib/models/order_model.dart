@@ -1,7 +1,7 @@
 class Order {
   final String orderId;
   final String customerId;
-  final List<Item> items;
+  final List<OrderItem> items;
   final double totalAmount;
   final String customerAddress;
   final String status;
@@ -37,7 +37,7 @@ class Order {
       orderId: map['orderId'],
       customerId: map['customerId'],
       items: (map['items'] as List<Map<String, dynamic>>)
-          .map((itemMap) => Item.fromMap(itemMap))
+          .map((itemMap) => OrderItem.fromMap(itemMap))
           .toList(),
       totalAmount: map['totalAmount'],
       customerAddress: map['customerAddress'],
@@ -48,13 +48,13 @@ class Order {
   }
 }
 
-class Item {
+class OrderItem {
   final String productId;
   final String productName;
   final int quantity;
   final double price;
 
-  Item({
+  OrderItem({
     required this.productId,
     required this.productName,
     required this.quantity,
@@ -70,12 +70,21 @@ class Item {
     };
   }
 
-  factory Item.fromMap(Map<String, dynamic> map) {
-    return Item(
+  factory OrderItem.fromMap(Map<String, dynamic> map) {
+    return OrderItem(
       productId: map['productId'],
       productName: map['productName'],
-      quantity: map['quantity'],
-      price: map['price'],
+      quantity: (map['quantity'] as num).toInt(), // Ensure 'quantity' is an int
+      price: (map['price'] as num).toDouble(), // Ensure 'price' is a double
     );
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      'productId': productId,
+      'productName': productName,
+      'quantity': quantity,
+      'price': price,
+    };
   }
 }

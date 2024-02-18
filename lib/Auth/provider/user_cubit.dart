@@ -1,12 +1,13 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+import 'package:rental_app/models/order_model.dart';
 import 'package:rental_app/models/user_model.dart';
 
 const FlutterSecureStorage secureStorage = FlutterSecureStorage();
 
 class UserCubit extends Cubit<UserState> {
   UserCubit() : super(UserInitialState()) {
-    // Set the guest user after the initial state
+    // Set the user after the initial state
     loadUser();
   }
 
@@ -18,7 +19,7 @@ class UserCubit extends Cubit<UserState> {
 
       emit(UserLoadedState(user));
     } catch (error) {
-      print('Error saving user data: $error');
+      // print('Error saving user data: $error');
     }
   }
 
@@ -32,7 +33,7 @@ class UserCubit extends Cubit<UserState> {
         setUser(user);
       }
     } catch (error) {
-      print('Error loading user data: $error');
+      // print('Error loading user data: $error');
     }
   }
 
@@ -56,7 +57,35 @@ class UserCubit extends Cubit<UserState> {
         emit(UserLoadedState(user)); // Emit the updated state
       }
     } catch (error) {
-      print('Error toggling favorite product: $error');
+      // print('Error toggling favorite product: $error');
+    }
+  }
+
+  Future<void> updateShoppingCartListForUser(
+      List<OrderItem> updatedShoppingCartList) async {
+    try {
+      if (state is UserLoadedState) {
+        final UserModel user = (state as UserLoadedState).user;
+
+        // Update the shopping cart list in the user model
+        UserModel updatedUser = UserModel(
+          userId: user.userId,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          favoriteProducts: user.favoriteProducts,
+          addressList: user.addressList,
+          ordersList: user.ordersList,
+          shoppingCartList: updatedShoppingCartList,
+        );
+
+        // Save the updated user data
+        await setUser(updatedUser);
+
+        emit(UserLoadedState(updatedUser)); // Emit the updated state
+      }
+    } catch (error) {
+      // Handle error, e.g., log it or show an error message
     }
   }
 }

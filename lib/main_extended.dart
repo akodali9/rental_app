@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
-import 'package:rental_app/screens/cart/cart_page.dart';
+import 'package:rental_app/screens/cart/shopping_cart_page.dart';
 import 'package:rental_app/screens/favorite/favorite_page.dart';
 import 'package:rental_app/screens/home/home_page.dart';
 import 'package:rental_app/screens/account/account_page.dart';
@@ -24,7 +24,7 @@ class _MainAppExtendedState extends State<MainAppExtended> {
     List screens = const [
       HomePage(),
       FavoritePage(),
-      CartPage(),
+      ShoppingCartPage(),
       AccountPage(),
     ];
     return BlocBuilder<UserCubit, UserState>(
@@ -105,8 +105,9 @@ class _MainAppExtendedState extends State<MainAppExtended> {
             extendBody: true,
             body: screens[index],
             bottomNavigationBar: CustomNavigationBar(
-              iconSize: 26,
-              backgroundColor: Theme.of(context).scaffoldBackgroundColor,
+              
+              iconSize: 26, 
+              backgroundColor: Colors.white,
               selectedColor: Theme.of(context).primaryColorDark,
               strokeColor: Theme.of(context).primaryColorDark,
               borderRadius: const Radius.circular(20),

@@ -9,6 +9,7 @@ import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/main_extended.dart';
 import 'package:rental_app/routes/routes.dart';
+import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
 import 'package:rental_app/screens/favorite/providers/favorite_page_cubit.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
@@ -48,6 +49,10 @@ void main() async {
           ),
           BlocProvider<FavoriteProductPageCubit>(
             create: (_) => FavoriteProductPageCubit(),
+            lazy: false,
+          ),
+          BlocProvider<ShoppingCartCubit>(
+            create: (_) => ShoppingCartCubit(),
             lazy: false,
           ),
         ],

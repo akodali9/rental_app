@@ -35,6 +35,7 @@ class AuthService {
       favoriteProducts: [],
       addressList: [],
       ordersList: [],
+      shoppingCartList: [],
     );
 
     final response = await http.get(
@@ -116,12 +117,12 @@ class AuthService {
         final Map<String, dynamic> responseBody = json.decode(response.body);
         if (response.statusCode != 500) {
           if (response.statusCode == 200) {
+            final userTokenCubit = context.read<UserTokenCubit>();
+            userTokenCubit.saveToken(responseBody['token']);
             final Map<String, dynamic> userMap = responseBody['user'];
             UserModel user = UserModel.fromMap(userMap);
             final userCubit = context.read<UserCubit>();
             userCubit.setUser(user);
-            final userTokenCubit = context.read<UserTokenCubit>();
-            userTokenCubit.saveToken(responseBody['token']);
             Navigator.of(context).pop();
             showSnackbar(context, responseBody['Status']);
           } else if (response.statusCode == 401) {
@@ -132,7 +133,7 @@ class AuthService {
         }
       }
     } catch (error) {
-      print(error);
+      // print(error);
     }
   }
 }

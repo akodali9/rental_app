@@ -17,7 +17,6 @@ class SearchService {
       "Content-Type": "application/json",
     });
 
-    print(response.statusCode);
     if (response.statusCode == 200) {
       if (context.mounted) {
         final Map<String, dynamic> responseBody = json.decode(response.body);

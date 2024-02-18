@@ -12,6 +12,7 @@ class UserModel {
   final List<String> favoriteProducts;
   final List<String> addressList;
   final List<Order> ordersList;
+  final List<OrderItem> shoppingCartList;
   // final num nversion;
 
   UserModel({
@@ -23,6 +24,7 @@ class UserModel {
     required this.favoriteProducts,
     required this.addressList,
     required this.ordersList,
+    required this.shoppingCartList,
     // required this.nversion,
   });
 
@@ -37,6 +39,7 @@ class UserModel {
       'favoriteProducts': favoriteProducts,
       'addressList': addressList,
       'ordersList': ordersList.map((order) => order.toMap()).toList(),
+      'shoppingCartList': shoppingCartList,
       // '__v': nversion,
     };
   }
@@ -61,16 +64,19 @@ class UserModel {
               ?.map((order) => Order.fromMap(order as Map<String, dynamic>))
               .toList() ??
           [],
+      shoppingCartList: (map['shoppingCartList'] as List<dynamic>?)
+              ?.map((orderitem) =>
+                  OrderItem.fromMap(orderitem as Map<String, dynamic>))
+              .toList() ??
+          [],
       // nversion: map['__v'] as num,
     );
   }
 
   void toggleFavoriteProduct(String productId) {
     if (favoriteProducts.contains(productId)) {
-      // If the product is already in the favorites, remove it
       favoriteProducts.remove(productId);
     } else {
-      // If the product is not in the favorites, add it
       favoriteProducts.add(productId);
     }
   }

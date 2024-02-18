@@ -10,19 +10,19 @@ import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart'
 import 'package:rental_app/functions/snackbar_showtext.dart';
 
 class HomeServices {
-  static void clearFetchHistory(String userToken) {
+  static void clearFetchHistory(String token) {
     try {
       http.get(
         Uri.parse(
           '$uri/product/clearfetchhistory',
         ),
         headers: {
-          'Authorization': userToken,
+          'Authorization': token,
           'Content-Type': 'application/json',
         },
       );
     } catch (error) {
-      print(error);
+      // print(error);
     }
   }
 
@@ -53,7 +53,6 @@ class HomeServices {
         return products;
       } else if (response.statusCode == 404) {
         if (context.mounted) {
-          print("You have reached the end!");
           HomeDataFetchedCubit homeDataFetchState =
               context.read<HomeDataFetchedCubit>();
           homeDataFetchState.trueStatus();
@@ -62,12 +61,12 @@ class HomeServices {
         return [];
       } else {
         // Handle error[]
-        print('Error fetching random products: ${response.statusCode}');
+        // print('Error fetching random products: ${response.statusCode}');
         return [];
       }
     } catch (error) {
       // Handle any exceptions
-      print('Error: $error');
+      // print('Error: $error');
       return [];
     }
   }

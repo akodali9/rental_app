@@ -4,8 +4,12 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/capitalize_first_letter.dart';
+import 'package:rental_app/functions/snackbar_showtext.dart';
+import 'package:rental_app/models/order_model.dart';
 import 'package:rental_app/models/product_model.dart';
 import 'package:rental_app/models/user_model.dart';
+import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
+import 'package:rental_app/screens/cart/services/shopping_services.dart';
 import 'package:rental_app/update/favorite_product_update.dart';
 
 class ProductDetailedView extends StatefulWidget {
@@ -124,14 +128,11 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Center(
-                          child: Text(
-                            capitalizeFirstLetter(widget.product.name),
-                            style: const TextStyle(
-                                fontSize: 24, fontWeight: FontWeight.bold),
-                          ),
+                        Text(
+                          capitalizeFirstLetter(widget.product.name),
+                          style: const TextStyle(
+                              fontSize: 24, fontWeight: FontWeight.bold),
                         ),
-                        const Divider(),
                         Text(
                           capitalizeFirstLetter(widget.product.description),
                           maxLines: showMoreDetails ? 20 : 2,
@@ -140,6 +141,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                             fontSize: 16,
                           ),
                         ),
+                        const Divider(),
                         const SizedBox(
                           height: 10,
                         ),
@@ -168,6 +170,20 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                                       fontSize: 16,
                                     ),
                                   ),
+                                  if (widget.product.model != "")
+                                    Text(
+                                      'model: ${capitalizeFirstLetter(widget.product.model)}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                  if (widget.product.size != "")
+                                    Text(
+                                      'Size: ${capitalizeFirstLetter(widget.product.size)}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
                                   if (showMoreDetails)
                                     Column(
                                       crossAxisAlignment:
@@ -175,20 +191,6 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.start,
                                       children: [
-                                        if (widget.product.model != "")
-                                          Text(
-                                            'model: ${capitalizeFirstLetter(widget.product.model)}',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
-                                        if (widget.product.size != "")
-                                          Text(
-                                            'Size: ${capitalizeFirstLetter(widget.product.size)}',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                            ),
-                                          ),
                                         if (widget.product.material != "")
                                           Text(
                                             'Material: ${capitalizeFirstLetter(widget.product.material)}',
@@ -223,7 +225,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                                       MainAxisAlignment.spaceEvenly,
                                   children: [
                                     Text(
-                                      '${widget.product.price} \$',
+                                      '${widget.product.price} INR',
                                       style: const TextStyle(
                                         fontSize: 20,
                                       ),
@@ -266,7 +268,32 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                           ),
                           width: double.infinity,
                           child: IconButton.filledTonal(
-                              onPressed: () {},
+                              onPressed: () {
+                                ShoppingCartCubit shoppingCartCubit =
+                                    context.read<ShoppingCartCubit>();
+                                final List<OrderItem> cartItems =
+                                    shoppingCartCubit.state
+                                            is ShoppingCartLoadedState
+                                        ? (shoppingCartCubit.state
+                                                as ShoppingCartLoadedState)
+                                            .shoppingCartList
+                                        : [];
+
+                                bool matchedItem = cartItems.any((item) =>
+                                    item.productId == widget.product.productId);
+                                if (cartItems != [] && matchedItem == true) {
+                                  showSnackbar(
+                                      context, 'Already added to cart');
+                                } else {
+                                  final OrderItem item = OrderItem(
+                                      productId: widget.product.productId,
+                                      productName: widget.product.name,
+                                      quantity: 1,
+                                      price: widget.product.price);
+
+                                  ShoppingServices.addProduct(item, context);
+                                }
+                              },
                               style: ButtonStyle(
                                 shape: MaterialStatePropertyAll(
                                   RoundedRectangleBorder(
@@ -282,29 +309,29 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                                 ),
                               )),
                         ),
-                        Container(
-                          margin: const EdgeInsets.symmetric(
-                            vertical: 5,
-                          ),
-                          width: double.infinity,
-                          child: IconButton(
-                              // highlightColor:  Colors.green[200],
-                              onPressed: () {},
-                              style: ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
-                                      Colors.green[200]),
-                                  shape: MaterialStatePropertyAll(
-                                      RoundedRectangleBorder(
-                                          borderRadius:
-                                              BorderRadius.circular(10)))),
-                              icon: const Text(
-                                "Rent now",
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
-                        ),
+                        // Container(
+                        //   margin: const EdgeInsets.symmetric(
+                        //     vertical: 5,
+                        //   ),
+                        //   width: double.infinity,
+                        //   child: IconButton(
+                        //       // highlightColor:  Colors.green[200],
+                        //       onPressed: () {},
+                        //       style: ButtonStyle(
+                        //           backgroundColor: MaterialStatePropertyAll(
+                        //               Colors.green[200]),
+                        //           shape: MaterialStatePropertyAll(
+                        //               RoundedRectangleBorder(
+                        //                   borderRadius:
+                        //                       BorderRadius.circular(10)))),
+                        //       icon: const Text(
+                        //         "Rent now",
+                        //         style: TextStyle(
+                        //           fontSize: 24,
+                        //           fontWeight: FontWeight.bold,
+                        //         ),
+                        //       )),
+                        // ),
                         const SizedBox(
                           height: 100,
                         ),

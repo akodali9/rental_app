@@ -11,8 +11,9 @@ class FavoriteServices {
   static Future<void> fetchFavoriteProducts(
       BuildContext context, List<String> favoriteProducts) async {
     try {
+      FavoriteProductPageCubit favoriteProductPageCubit =
+          context.read<FavoriteProductPageCubit>();
       final String apiUrl = '$uri/user/fetch-favorite';
-      print("fetch favorite products called");
       final response = await http.post(
         Uri.parse(apiUrl),
         headers: {
@@ -27,19 +28,23 @@ class FavoriteServices {
 
       if (response.statusCode == 200) {
         if (context.mounted) {
-          FavoriteProductPageCubit favoriteProductPageCubit =
-              context.read<FavoriteProductPageCubit>();
           Map<String, dynamic> responseBody = json.decode(response.body);
-          List<dynamic> favoriteProductsData = responseBody['favoriteProductsFetched'];
+          List<dynamic> favoriteProductsData =
+              responseBody['favoriteProductsFetched'];
           List<Product> favoriteProducts = favoriteProductsData
               .map((favoriteProduct) => Product.fromJson(favoriteProduct))
               .toList();
-
-          favoriteProductPageCubit.loadFavoriteProducts(favoriteProducts);
+          if (favoriteProducts.isNotEmpty) {
+            favoriteProductPageCubit.loadFavoriteProducts(favoriteProducts);
+          } else {
+            favoriteProductPageCubit.setEmptyState();
+          }
         }
       } else {
-        print('Error recieving products: ${response.statusCode}');
+        // print('Error recieving products: ${response.statusCode}');
       }
-    } catch (error) {}
+    } catch (error) {
+      //
+    }
   }
 }

@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
-import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Components/carousel_widget.dart';
 import 'package:rental_app/Components/category_scroll_card.dart';
 import 'package:rental_app/Components/sliver_product_display.dart';
@@ -62,7 +61,8 @@ class _HomePageState extends State<HomePage> {
 
     final String userToken = userTokenCubit.state is UserTokenLoadedState
         ? (userTokenCubit.state as UserTokenLoadedState).token
-        : '';
+        : 'no token';
+
 
     return userToken;
   }
@@ -94,7 +94,6 @@ class _HomePageState extends State<HomePage> {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       } else if (state is UserLoadedState) {
         // final UserModel user = state.user;
-
         // if (user.userId == 'guest') {
         //   // Handle the case where user is null
         //   return const Scaffold(
@@ -126,7 +125,6 @@ class _HomePageState extends State<HomePage> {
           ),
           body: BlocBuilder<HomeProductViewCubit, HomeProductViewState>(
               builder: (context, state) {
-            AuthService.tokenVerify(context, fetchtoken());
             if (state is HomeProductViewInitialState) {
               return const LinearProgressIndicator();
             } else if (state is HomeProductViewLoadedState) {

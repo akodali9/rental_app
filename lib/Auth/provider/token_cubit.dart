@@ -25,7 +25,7 @@ class UserTokenCubit extends Cubit<UserTokenState> {
         saveToken(userToken);
       }
     } catch (error) {
-      print(error);
+      // print(error);
     }
   }
 }
