@@ -2,17 +2,18 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
+import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/global_variables.dart';
 import 'package:rental_app/models/product_model.dart';
 import 'package:rental_app/screens/home/home_page.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
-import 'package:rental_app/functions/snackbar_showtext.dart';
+import 'package:rental_app/functions/show_toast.dart';
 
 class HomeServices {
-  static void clearFetchHistory(String token) {
+  static void clearFetchHistory(String token) async {
     try {
-      http.get(
+      await http.get(
         Uri.parse(
           '$uri/product/clearfetchhistory',
         ),
@@ -56,8 +57,11 @@ class HomeServices {
           HomeDataFetchedCubit homeDataFetchState =
               context.read<HomeDataFetchedCubit>();
           homeDataFetchState.trueStatus();
-          showSnackbar(context, "You have reached the end!");
+          showToast(context, "You have reached the end!");
         }
+        return [];
+      } else if (response.statusCode == 401) {
+        if (context.mounted) logoutuser(context);
         return [];
       } else {
         // Handle error[]

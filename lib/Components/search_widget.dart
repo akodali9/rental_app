@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:rental_app/functions/snackbar_showtext.dart';
+import 'package:rental_app/functions/show_toast.dart';
 import 'package:rental_app/screens/search/providers/searched_products_cubit.dart';
 import 'package:rental_app/screens/search/services/search_service.dart';
 
@@ -32,7 +32,7 @@ class _SearchWidgetState extends State<SearchWidget> {
         if (query != "") {
           await SearchService.productSearchCall(context, query);
         } else {
-          showSnackbar(context, "Please enter in search bar");
+          showToast(context, "Please enter in search bar");
         }
       },
       decoration: InputDecoration(

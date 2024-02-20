@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
-import 'package:rental_app/functions/snackbar_showtext.dart';
+import 'package:rental_app/functions/show_toast.dart';
 
 class Login extends StatefulWidget {
   const Login({
@@ -94,7 +94,7 @@ class _LoginState extends State<Login> {
                     context,
                   );
                 } else {
-                  return showSnackbar(context, "Please enter your credentials!");
+                  return showToast(context, "Please enter your credentials!");
                 }
               },
               style: const ButtonStyle(

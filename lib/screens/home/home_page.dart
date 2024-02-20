@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
+import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Components/carousel_widget.dart';
 import 'package:rental_app/Components/category_scroll_card.dart';
 import 'package:rental_app/Components/sliver_product_display.dart';
@@ -63,7 +64,6 @@ class _HomePageState extends State<HomePage> {
         ? (userTokenCubit.state as UserTokenLoadedState).token
         : 'no token';
 
-
     return userToken;
   }
 
@@ -102,7 +102,7 @@ class _HomePageState extends State<HomePage> {
         //     ),
         //   );
         // }
-
+        AuthService.tokenVerify(context, fetchtoken());
         return Scaffold(
           appBar: AppBar(
             title: TextFormField(
@@ -196,13 +196,42 @@ class _HomePageState extends State<HomePage> {
                             HomeDataFetchState>(
                           builder: (context, state) {
                             if (state is HomeDataFetchInitialState) {
-                              return TextButton(
-                                child: const Text('Load More'),
-                                onPressed: () {
-                                  HomeServices.fetchRandomProducts(
-                                      2, fetchtoken(), context);
-                                },
+                              return Padding(
+                                padding: const EdgeInsets.only(bottom:  10.0, left: 12.0, right: 12.0),
+                                child: SizedBox(
+                                  width: 10,
+                                  height: 50,
+                                  child: ElevatedButton(
+                                  
+                                    style: ButtonStyle(
+                                      enableFeedback: true,
+                                        elevation:
+                                            const MaterialStatePropertyAll(5),
+                                        shape: MaterialStatePropertyAll(
+                                            RoundedRectangleBorder(
+                                                borderRadius:
+                                                    BorderRadius.circular(
+                                                        10.0)))),
+                                    onPressed: () {
+                                      HomeServices.fetchRandomProducts(
+                                          2, fetchtoken(), context);
+                                    },
+                                    child: const Text(
+                                      "Load More",
+                                      style: TextStyle(
+                                        fontSize: 20,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
+                                  ),
+                                ),
                               );
+                              // return TextButton(
+                              //   child: const Text('Load More'),
+                              //   onPressed: () {
+                              //
+                              //   },
+                              // );
                             } else {
                               return const SizedBox();
                             }

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
+import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/global_variables.dart';
 import 'package:rental_app/models/order_model.dart';
 import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
@@ -10,7 +11,7 @@ import 'package:http/http.dart' as http;
 
 class ShoppingServices {
   static Future<void> updateUserShoppingCart(
-      BuildContext context, ShoppingCartCubit shoppingCartCubit) async {
+      BuildContext context, List<OrderItem> shoppingCartList) async {
     UserCubit userCubit = context.read<UserCubit>();
 
     String token = userCubit.state is UserLoadedState
@@ -27,7 +28,7 @@ class ShoppingServices {
       body: json.encode(
         {
           "userId": token,
-          "shoppingCartList": shoppingCartCubit.loadItems(),
+          "shoppingCartList": shoppingCartList,
         },
       ),
     );
@@ -37,6 +38,8 @@ class ShoppingServices {
       List<OrderItem> convertedCartList =
           updatedServerCartList.map((item) => OrderItem.fromMap(item)).toList();
       userCubit.updateShoppingCartListForUser(convertedCartList);
+    } else if (response.statusCode == 401) {
+      if (context.mounted) logoutuser(context);
     }
   }
 
@@ -46,7 +49,7 @@ class ShoppingServices {
   ) async {
     ShoppingCartCubit shoppingCartCubit = context.read<ShoppingCartCubit>();
     shoppingCartCubit.addItemToCart(newItem);
-    await updateUserShoppingCart(context, shoppingCartCubit);
+    await updateUserShoppingCart(context, shoppingCartCubit.loadItems());
   }
 
   static Future<void> decrementQuantity(
@@ -55,7 +58,7 @@ class ShoppingServices {
   ) async {
     ShoppingCartCubit shoppingCartCubit = context.read<ShoppingCartCubit>();
     shoppingCartCubit.decrementQuantity(item);
-    await updateUserShoppingCart(context, shoppingCartCubit);
+    await updateUserShoppingCart(context, shoppingCartCubit.loadItems());
   }
 
   static Future<void> incrementQuantity(
@@ -64,7 +67,7 @@ class ShoppingServices {
   ) async {
     ShoppingCartCubit shoppingCartCubit = context.read<ShoppingCartCubit>();
     shoppingCartCubit.incrementQuantity(item);
-    await updateUserShoppingCart(context, shoppingCartCubit);
+    await updateUserShoppingCart(context, shoppingCartCubit.loadItems());
   }
 
   static Future<void> deleteItem(
@@ -73,6 +76,6 @@ class ShoppingServices {
   ) async {
     ShoppingCartCubit shoppingCartCubit = context.read<ShoppingCartCubit>();
     shoppingCartCubit.deleteItem(item);
-    await updateUserShoppingCart(context, shoppingCartCubit);
+    await updateUserShoppingCart(context, shoppingCartCubit.loadItems());
   }
 }

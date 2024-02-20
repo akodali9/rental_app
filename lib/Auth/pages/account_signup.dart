@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/Auth/provider/auth_switch.dart';
-import 'package:rental_app/functions/snackbar_showtext.dart';
+import 'package:rental_app/functions/show_toast.dart';
 
 class Signup extends StatefulWidget {
   const Signup({
@@ -165,7 +165,7 @@ class _SignupState extends State<Signup> {
                   }
                 }
                 else{
-                  return showSnackbar(context, "Please fill in your details and passwords!");
+                  return showToast(context, "Please fill in your details and passwords!");
                 }
               },
               style: const ButtonStyle(

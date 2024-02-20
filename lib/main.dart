@@ -9,6 +9,7 @@ import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/main_extended.dart';
 import 'package:rental_app/routes/routes.dart';
+import 'package:rental_app/screens/cart/providers/cart_price_cubit.dart';
 import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
 import 'package:rental_app/screens/favorite/providers/favorite_page_cubit.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
@@ -55,6 +56,9 @@ void main() async {
             create: (_) => ShoppingCartCubit(),
             lazy: false,
           ),
+          BlocProvider<CartPriceCubit>(
+            create: (_) => CartPriceCubit(),
+          )
         ],
         child: const MaterialAPP(),
       ),
@@ -71,10 +75,9 @@ class MaterialAPP extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-        fontFamily: GoogleFonts.poppins().fontFamily,
-        brightness: Brightness.light,
-        colorSchemeSeed: Colors.blue[50],
-      ),
+          fontFamily: GoogleFonts.poppins().fontFamily,
+          brightness: Brightness.light,
+          colorSchemeSeed: Colors.blue[50]),
       title: "Rental App",
       onGenerateRoute: (routeSettings) => generateRoutes(routeSettings),
       initialRoute: '/',

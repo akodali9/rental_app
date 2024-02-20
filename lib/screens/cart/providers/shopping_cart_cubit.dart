@@ -4,10 +4,6 @@ import 'package:rental_app/models/order_model.dart';
 class ShoppingCartCubit extends Cubit<ShoppingCartState> {
   ShoppingCartCubit() : super(ShoppingCartInitialState());
 
-  void saveItems(List<OrderItem> shoppingCartItems) {
-    emit(ShoppingCartLoadedState(shoppingCartItems));
-  }
-
   List<OrderItem> loadItems() {
     if (state is ShoppingCartLoadedState) {
       return (state as ShoppingCartLoadedState).shoppingCartList;
@@ -16,8 +12,12 @@ class ShoppingCartCubit extends Cubit<ShoppingCartState> {
     }
   }
 
-  void removeItems() {
-    emit(ShoppingCartInitialState());
+  void updateShoppingCart(List<OrderItem> shoppingCartList) {
+    emit(ShoppingCartLoadedState(shoppingCartList));
+  }
+
+  void clearShoppingList() {
+    emit(ShoppingCartLoadedState([]));
   }
 
   void addItemToCart(

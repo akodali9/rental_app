@@ -8,10 +8,6 @@ class FavoriteProductPageCubit extends Cubit<FavoriteProductPageState> {
     emit(FavoriteProductPageLoadedState(favoriteProducts));
   }
 
-  void setEmptyState() {
-    emit(FavoriteProductPageEmptyState());
-  }
-
   void resetFavoriteProducts() {
     emit(FavoriteProductPageInitialState());
   }

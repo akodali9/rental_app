@@ -82,7 +82,7 @@ class UserCubit extends Cubit<UserState> {
         // Save the updated user data
         await setUser(updatedUser);
 
-        emit(UserLoadedState(updatedUser)); // Emit the updated state
+        // emit(UserLoadedState(updatedUser)); // Emit the updated state
       }
     } catch (error) {
       // Handle error, e.g., log it or show an error message

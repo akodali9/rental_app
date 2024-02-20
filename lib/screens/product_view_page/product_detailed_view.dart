@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/capitalize_first_letter.dart';
-import 'package:rental_app/functions/snackbar_showtext.dart';
+import 'package:rental_app/functions/show_toast.dart';
 import 'package:rental_app/models/order_model.dart';
 import 'package:rental_app/models/product_model.dart';
 import 'package:rental_app/models/user_model.dart';
@@ -268,46 +268,46 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                           ),
                           width: double.infinity,
                           child: IconButton.filledTonal(
-                              onPressed: () {
-                                ShoppingCartCubit shoppingCartCubit =
-                                    context.read<ShoppingCartCubit>();
-                                final List<OrderItem> cartItems =
-                                    shoppingCartCubit.state
-                                            is ShoppingCartLoadedState
-                                        ? (shoppingCartCubit.state
-                                                as ShoppingCartLoadedState)
-                                            .shoppingCartList
-                                        : [];
+                            onPressed: () {
+                              ShoppingCartCubit shoppingCartCubit =
+                                  context.read<ShoppingCartCubit>();
+                              final List<OrderItem> cartItems =
+                                  shoppingCartCubit.state
+                                          is ShoppingCartLoadedState
+                                      ? (shoppingCartCubit.state
+                                              as ShoppingCartLoadedState)
+                                          .shoppingCartList
+                                      : [];
 
-                                bool matchedItem = cartItems.any((item) =>
-                                    item.productId == widget.product.productId);
-                                if (cartItems != [] && matchedItem == true) {
-                                  showSnackbar(
-                                      context, 'Already added to cart');
-                                } else {
-                                  final OrderItem item = OrderItem(
-                                      productId: widget.product.productId,
-                                      productName: widget.product.name,
-                                      quantity: 1,
-                                      price: widget.product.price);
+                              bool matchedItem = cartItems.any((item) =>
+                                  item.productId == widget.product.productId);
+                              if (cartItems != [] && matchedItem == true) {
+                                showToast(context, 'Already added to cart');
+                              } else {
+                                final OrderItem item = OrderItem(
+                                    productId: widget.product.productId,
+                                    productName: widget.product.name,
+                                    quantity: 1,
+                                    price: widget.product.price);
 
-                                  ShoppingServices.addProduct(item, context);
-                                }
-                              },
-                              style: ButtonStyle(
-                                shape: MaterialStatePropertyAll(
-                                  RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(10),
-                                  ),
+                                ShoppingServices.addProduct(item, context);
+                              }
+                            },
+                            style: ButtonStyle(
+                              shape: MaterialStatePropertyAll(
+                                RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(10),
                                 ),
                               ),
-                              icon: const Text(
-                                "Add to Cart",
-                                style: TextStyle(
-                                  fontSize: 24,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )),
+                            ),
+                            icon: const Text(
+                              "Add to Cart",
+                              style: TextStyle(
+                                fontSize: 24,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
                         ),
                         // Container(
                         //   margin: const EdgeInsets.symmetric(

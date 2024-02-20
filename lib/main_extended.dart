@@ -1,8 +1,8 @@
-import 'package:custom_navigation_bar/custom_navigation_bar.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
+import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/screens/cart/shopping_cart_page.dart';
 import 'package:rental_app/screens/favorite/favorite_page.dart';
 import 'package:rental_app/screens/home/home_page.dart';
@@ -104,37 +104,52 @@ class _MainAppExtendedState extends State<MainAppExtended> {
           return Scaffold(
             extendBody: true,
             body: screens[index],
-            bottomNavigationBar: CustomNavigationBar(
-              
-              iconSize: 26, 
-              backgroundColor: Colors.white,
-              selectedColor: Theme.of(context).primaryColorDark,
-              strokeColor: Theme.of(context).primaryColorDark,
-              borderRadius: const Radius.circular(20),
-              elevation: 20,
-              bubbleCurve: Curves.easeInOut,
-              currentIndex: index,
-              onTap: (value) async {
+            bottomNavigationBar: NavigationBar(
+              selectedIndex: index,
+              onDestinationSelected: (newIndex) {
                 setState(() {
-                  index = value;
+                  index = newIndex;
                 });
               },
-              items: [
-                CustomNavigationBarItem(
-                  icon: const Icon(Icons.home_outlined),
-                  selectedIcon: const Icon(Icons.home_rounded),
+              elevation: 2.5,
+              height: 60,
+              labelBehavior: NavigationDestinationLabelBehavior.alwaysHide,
+              destinations: [
+                const NavigationDestination(
+                  label: "Home",
+                  icon: Icon(Icons.home_outlined),
+                  selectedIcon: Icon(Icons.home_rounded),
                 ),
-                CustomNavigationBarItem(
-                  icon: const Icon(Icons.favorite_outline),
-                  selectedIcon: const Icon(Icons.favorite),
-                ),
-                CustomNavigationBarItem(
-                  icon: const Icon(Icons.shopping_cart_outlined),
-                  selectedIcon: const Icon(Icons.shopping_cart),
-                ),
-                CustomNavigationBarItem(
-                  icon: const Icon(Icons.account_circle_outlined),
-                  selectedIcon: const Icon(Icons.account_circle),
+                BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+                  UserModel user = (state as UserLoadedState).user;
+                  return NavigationDestination(
+                    label: "Favorite",
+                    icon: user.favoriteProducts.isNotEmpty
+                        ? Badge(
+                            label: Text('${user.favoriteProducts.length}'),
+                            child: const Icon(Icons.favorite_outline))
+                        : const Icon(Icons.favorite_outline),
+                    selectedIcon: const Icon(Icons.favorite),
+                  );
+                }),
+                BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+                  final userCubit = state as UserLoadedState;
+
+                  return NavigationDestination(
+                    label: "Cart",
+                    icon: userCubit.user.shoppingCartList.isNotEmpty
+                        ? Badge(
+                            label: Text(
+                                '${userCubit.user.shoppingCartList.length}'),
+                            child: const Icon(Icons.shopping_cart_outlined))
+                        : const Icon(Icons.shopping_cart_outlined),
+                    selectedIcon: const Icon(Icons.shopping_cart),
+                  );
+                }),
+                const NavigationDestination(
+                  label: "Account",
+                  icon: Icon(Icons.account_circle_outlined),
+                  selectedIcon: Icon(Icons.account_circle),
                 ),
               ],
             ),

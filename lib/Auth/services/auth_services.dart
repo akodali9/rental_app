@@ -9,7 +9,7 @@ import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/global_variables.dart';
 import 'package:rental_app/models/user_model.dart';
-import 'package:rental_app/functions/snackbar_showtext.dart';
+import 'package:rental_app/functions/show_toast.dart';
 
 class AuthService {
   static void tokenVerify(BuildContext context, String token) async {
@@ -20,7 +20,6 @@ class AuthService {
         "Content-Type": "application/json",
       },
     );
-
     if (response.statusCode == 401) {
       if (context.mounted) logoutuser(context);
     }
@@ -81,13 +80,13 @@ class AuthService {
         final Map<String, dynamic> responseBody = json.decode(response.body);
         if (response.statusCode != 500) {
           if (response.statusCode == 200) {
-            showSnackbar(context, responseBody['Status']);
+            showToast(context, responseBody['Status']);
             BlocProvider.of<AuthSwitchCubit>(context).changeBool();
           } else if (response.statusCode == 409) {
-            showSnackbar(context, responseBody['error']);
+            showToast(context, responseBody['error']);
           }
         } else {
-          showSnackbar(context, responseBody['Status']);
+          showToast(context, responseBody['Status']);
         }
       }
     } catch (error) {
@@ -124,12 +123,12 @@ class AuthService {
             final userCubit = context.read<UserCubit>();
             userCubit.setUser(user);
             Navigator.of(context).pop();
-            showSnackbar(context, responseBody['Status']);
+            showToast(context, responseBody['Status']);
           } else if (response.statusCode == 401) {
-            showSnackbar(context, responseBody['error']);
+            showToast(context, responseBody['error']);
           }
         } else {
-          showSnackbar(context, responseBody['Status']);
+          showToast(context, responseBody['Status']);
         }
       }
     } catch (error) {
