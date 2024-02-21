@@ -2,6 +2,7 @@ import 'dart:convert';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/global_variables.dart';
@@ -14,20 +15,25 @@ class ShoppingServices {
       BuildContext context, List<OrderItem> shoppingCartList) async {
     UserCubit userCubit = context.read<UserCubit>();
 
-    String token = userCubit.state is UserLoadedState
+    String userId = userCubit.state is UserLoadedState
         ? (userCubit.state as UserLoadedState).user.userId
-        : 'token';
+        : 'userId';
 
+    UserTokenCubit userTokenCubit = context.read<UserTokenCubit>();
+    String token = userTokenCubit is UserTokenLoadedState
+        ? (userTokenCubit.state as UserTokenLoadedState).token
+        : 'userId';
     final response = await http.post(
       Uri.parse(
         "$uri/user/shopping-cart",
       ),
       headers: {
         'Content-Type': 'application/json',
+        'Authorization': token,
       },
       body: json.encode(
         {
-          "userId": token,
+          "userId": userId,
           "shoppingCartList": shoppingCartList,
         },
       ),
@@ -40,7 +46,7 @@ class ShoppingServices {
       userCubit.updateShoppingCartListForUser(convertedCartList);
     } else if (response.statusCode == 401) {
       if (context.mounted) logoutuser(context);
-    }
+    } 
   }
 
   static Future<void> addProduct(

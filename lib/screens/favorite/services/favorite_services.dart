@@ -5,7 +5,6 @@ import 'package:http/http.dart' as http;
 import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/global_variables.dart';
 import 'package:rental_app/models/product_model.dart';
-import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
 import 'package:rental_app/screens/favorite/providers/favorite_page_cubit.dart';
 
 class FavoriteServices {
@@ -14,6 +13,7 @@ class FavoriteServices {
     try {
       FavoriteProductPageCubit favoriteProductPageCubit =
           context.read<FavoriteProductPageCubit>();
+      // favoriteProductPageCubit.resetFavoriteProducts();
       final String apiUrl = '$uri/user/fetch-favorite';
       final response = await http.post(
         Uri.parse(apiUrl),
@@ -26,7 +26,6 @@ class FavoriteServices {
           },
         ),
       );
-      print(response.statusCode);
 
       if (response.statusCode == 200) {
         if (context.mounted) {

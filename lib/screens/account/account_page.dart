@@ -3,7 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/alertdialog_customactions.dart';
-import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/functions/show_toast.dart';
 
 class AccountPage extends StatefulWidget {
@@ -131,11 +130,8 @@ class _AccountPageState extends State<AccountPage> {
                           "No"
                         ], [
                           () {
-                            logoutuser(context);
+                            context.read<UserCubit>().removeUser();
                             Navigator.of(context).pop();
-                            // UserTokenCubit userTokenCubit =
-                            //     context.read<UserTokenCubit>();
-                            // userTokenCubit.deleteToken();
                             showToast(context,
                                 "You have been Successfully logged out");
                           },

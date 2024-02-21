@@ -11,6 +11,8 @@ import 'package:rental_app/main_extended.dart';
 import 'package:rental_app/routes/routes.dart';
 import 'package:rental_app/screens/cart/providers/cart_price_cubit.dart';
 import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
+import 'package:rental_app/screens/category/providers/category_provider.dart';
+import 'package:rental_app/screens/category/providers/catgeory_fetched.dart';
 import 'package:rental_app/screens/favorite/providers/favorite_page_cubit.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
@@ -58,6 +60,15 @@ void main() async {
           ),
           BlocProvider<CartPriceCubit>(
             create: (_) => CartPriceCubit(),
+            lazy: false,
+          ),
+          BlocProvider<CategoryCubit>(
+            create: (_) => CategoryCubit(),
+            lazy: false,
+          ),
+          BlocProvider<CatgeoryFetched>(
+            create: (_) => CatgeoryFetched(),
+            lazy: false,
           )
         ],
         child: const MaterialAPP(),

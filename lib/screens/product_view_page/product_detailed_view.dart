@@ -62,8 +62,8 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
               slivers: [
                 SliverToBoxAdapter(
                   child: SizedBox(
-                    height: MediaQuery.of(context).size.height / 4,
-                    width: MediaQuery.of(context).size.width,
+                    height: MediaQuery.of(context).size.height / 3.6,
+                    // width: MediaQuery.of(context).size.width,
                     child: Swiper(
                       itemCount: widget.product.images.length,
                       autoplay: true,
@@ -107,13 +107,10 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                         ),
                       ),
                       itemBuilder: (context, index) {
-                        return Card(
-                          elevation: 5,
-                          child: Image.memory(
-                            widget.product.images[index].data,
-                            fit: BoxFit.cover,
-                            width: MediaQuery.of(context).size.width,
-                          ),
+                        return Image.memory(
+                          widget.product.images[index].data,
+                          fit: BoxFit.fill,
+                          width: MediaQuery.of(context).size.width,
                         );
                       },
                     ),
@@ -283,6 +280,10 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                                   item.productId == widget.product.productId);
                               if (cartItems != [] && matchedItem == true) {
                                 showToast(context, 'Already added to cart');
+                              } else if (cartItems != [] &&
+                                  cartItems.length >= 3) {
+                                showToast(context,
+                                    'More than 3 products cannot be added to cart');
                               } else {
                                 final OrderItem item = OrderItem(
                                     productId: widget.product.productId,

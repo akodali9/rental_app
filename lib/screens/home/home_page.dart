@@ -17,26 +17,44 @@ class HomePage extends StatefulWidget {
   const HomePage({super.key});
   static const String routename = '/home';
 
-  static List<List<String>> categoryImgcardList = [
+  static List<List> categoryImgcardList = [
+    ["testCategory1", "assets/images/test.jpeg", Icons.abc, Colors.brown],
+    ["testCategory2", "assets/images/test.jpeg", Icons.abc, Colors.brown],
     [
-      "test",
+      "Living room Furniture",
       "assets/images/test.jpeg",
+      Icons.living,
+      Colors.brown,
     ],
     [
-      "test",
+      "Living room Appliances",
       "assets/images/test.jpeg",
+      Icons.tv,
+      Colors.blueGrey
     ],
     [
-      "test",
+      "Bed room Furniture",
       "assets/images/test.jpeg",
+      Icons.bed,
+      Colors.brown
     ],
     [
-      "test",
+      "Bed room Appliances",
       "assets/images/test.jpeg",
+      Icons.lightbulb_outline,
+      Colors.blueGrey
     ],
     [
-      "test",
+      "kitchen Furniture",
       "assets/images/test.jpeg",
+      Icons.table_bar,
+      Colors.brown
+    ],
+    [
+      "kitchen Appliances",
+      "assets/images/test.jpeg",
+      Icons.kitchen_outlined,
+      Colors.blueGrey
     ],
   ];
 
@@ -173,9 +191,12 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-                            CategoryScrollCard(
-                              imgCardList: HomePage.categoryImgcardList,
-                              isNetworkImage: false,
+                            Container(
+                              margin: const EdgeInsets.only(left: 4.0),
+                              child: CategoryScrollCard(
+                                imgCardList: HomePage.categoryImgcardList,
+                                isNetworkImage: false,
+                              ),
                             ),
                           ],
                         ),
@@ -197,14 +218,14 @@ class _HomePageState extends State<HomePage> {
                           builder: (context, state) {
                             if (state is HomeDataFetchInitialState) {
                               return Padding(
-                                padding: const EdgeInsets.only(bottom:  10.0, left: 12.0, right: 12.0),
+                                padding: const EdgeInsets.only(
+                                    bottom: 10.0, left: 12.0, right: 12.0),
                                 child: SizedBox(
                                   width: 10,
                                   height: 50,
                                   child: ElevatedButton(
-                                  
                                     style: ButtonStyle(
-                                      enableFeedback: true,
+                                        enableFeedback: true,
                                         elevation:
                                             const MaterialStatePropertyAll(5),
                                         shape: MaterialStatePropertyAll(

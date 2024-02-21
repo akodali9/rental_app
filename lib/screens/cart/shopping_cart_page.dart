@@ -70,7 +70,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
               builder: (context, state) {
                 if (state is ShoppingCartLoadedState) {
                   final shoppingCartList = state.shoppingCartList;
-
                   if (shoppingCartList.isEmpty) {
                     return const Center(
                       child: Text('Your Shopping cart is empty!'),
@@ -122,7 +121,6 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           delegate: SliverChildBuilderDelegate(
                             childCount: shoppingCartList.length,
                             (context, index) {
-
                               final item = shoppingCartList[index];
                               return Padding(
                                 padding: const EdgeInsets.symmetric(
@@ -166,10 +164,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                             Row(
                                               children: [
                                                 IconButton.filledTonal(
-                                                  icon: item.quantity > 1
-                                                      ? const Icon(Icons.remove)
-                                                      : const Icon(
-                                                          Icons.delete),
+                                                  icon:
+                                                      const Icon(Icons.remove),
                                                   onPressed: () {
                                                     if (item.quantity > 1) {
                                                       ShoppingServices
@@ -188,6 +184,10 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                                     context);
                                                             Navigator.pop(
                                                                 context);
+                                                            context
+                                                                .read<
+                                                                    CartPriceCubit>()
+                                                                .loadInitialPrice();
                                                           },
                                                           () {
                                                             Navigator.pop(
@@ -268,13 +268,15 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Text(
-                            "Total: $totalCost INR",
-                            style: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          )
+                          totalCost != 0
+                              ? Text(
+                                  "Total: $totalCost INR",
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                )
+                              : const SizedBox(),
                         ],
                       ),
                     ),

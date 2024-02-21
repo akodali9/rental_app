@@ -15,6 +15,7 @@ class SearchService {
     final response = await http
         .get(Uri.parse("$uri/product/search?q=$searchQuery"), headers: {
       "Content-Type": "application/json",
+      
     });
 
     if (response.statusCode == 200) {
