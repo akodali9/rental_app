@@ -10,7 +10,7 @@ import 'package:rental_app/models/product_model.dart';
 import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
 import 'package:rental_app/screens/cart/services/shopping_services.dart';
-import 'package:rental_app/update/favorite_product_update.dart';
+import 'package:rental_app/update/wishlist_product_update.dart';
 
 class ProductDetailedView extends StatefulWidget {
   const ProductDetailedView({super.key, required this.product});
@@ -31,7 +31,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
         if (state is UserLoadedState) {
           final UserModel user = state.user;
           bool isFavorite =
-              user.favoriteProducts.contains(widget.product.productId);
+              user.wishlistProducts.contains(widget.product.productId);
           return Scaffold(
             appBar: AppBar(),
             extendBody: true,
@@ -41,15 +41,15 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
               label: const Text("Favorite"),
               onPressed: () async {
                 UserCubit userCubit = context.read<UserCubit>();
-                userCubit.toggleFavoriteProduct(widget.product.productId);
+                userCubit.toggleWishlistProduct(widget.product.productId);
 
                 UserTokenCubit userTokenCubit = context.read<UserTokenCubit>();
                 final String userToken =
                     userTokenCubit.state is UserTokenLoadedState
                         ? (userTokenCubit.state as UserTokenLoadedState).token
                         : '';
-                await updateFavoritesOnServer(
-                    context, user.favoriteProducts, userToken, user.userId);
+                await updateWishlistOnServer(
+                    context, user.wishlistProducts, userToken, user.userId);
               },
               icon: isFavorite
                   ? const Icon(
@@ -125,18 +125,56 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Text(
-                          capitalizeFirstLetter(widget.product.name),
-                          style: const TextStyle(
-                              fontSize: 24, fontWeight: FontWeight.bold),
-                        ),
-                        Text(
-                          capitalizeFirstLetter(widget.product.description),
-                          maxLines: showMoreDetails ? 20 : 2,
-                          overflow: TextOverflow.ellipsis,
-                          style: const TextStyle(
-                            fontSize: 16,
-                          ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  capitalizeFirstLetter(widget.product.name),
+                                  style: const TextStyle(
+                                      fontSize: 24,
+                                      fontWeight: FontWeight.bold),
+                                ),
+                                Text(
+                                  capitalizeFirstLetter(
+                                      widget.product.description),
+                                  maxLines: showMoreDetails ? 20 : 2,
+                                  overflow: TextOverflow.ellipsis,
+                                  style: const TextStyle(
+                                    fontSize: 16,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            Card(
+                              elevation: 3,
+                              child: SizedBox(
+                                height: 100,
+                                width: 100,
+                                child: Column(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceEvenly,
+                                  children: [
+                                    Text(
+                                      '${widget.product.price} INR',
+                                      style: const TextStyle(
+                                        fontSize: 20,
+                                      ),
+                                    ),
+                                    const Divider(thickness: 2, height: 0),
+                                    const Text(
+                                      'Month',
+                                      style: TextStyle(
+                                        fontSize: 24,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
                         const Divider(),
                         const SizedBox(
@@ -212,32 +250,6 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                                 ],
                               ),
                             ),
-                            Card(
-                              elevation: 3,
-                              child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      '${widget.product.price} INR',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    const Divider(thickness: 2, height: 0),
-                                    const Text(
-                                      'Month',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                         Padding(
@@ -302,7 +314,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                               ),
                             ),
                             icon: const Text(
-                              "Add to Cart",
+                              "Rent now",
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,

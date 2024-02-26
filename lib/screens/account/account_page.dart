@@ -4,6 +4,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/alertdialog_customactions.dart';
 import 'package:rental_app/functions/show_toast.dart';
+import 'package:rental_app/screens/address/address_page.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -83,37 +84,49 @@ class _AccountPageState extends State<AccountPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    InkWell(
-                      onTap: () {},
-                      enableFeedback: true,
-                      child: const ListTile(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 0.5),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        style: const ButtonStyle(
+                          shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))
+                          )),
+                          padding: MaterialStatePropertyAll(
+                            EdgeInsets.zero,
                           ),
                         ),
-                        leading: Icon(Icons.location_city),
-                        title: Text('Saved Address'),
-                        trailing: Icon(Icons.arrow_forward),
+                        onPressed: () {
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => const AddressPage(),
+                          ));
+                        },
+                        child: const ListTile(
+                          leading: Icon(Icons.location_city),
+                          title: Text('Saved Address'),
+                          trailing: Icon(Icons.arrow_forward),
+                        ),
                       ),
                     ),
                     const SizedBox(
                       height: 10,
                     ),
-                    InkWell(
-                      onTap: () {},
-                      enableFeedback: true,
-                      child: const ListTile(
-                        shape: RoundedRectangleBorder(
-                          side: BorderSide(width: 0.5),
-                          borderRadius: BorderRadius.all(
-                            Radius.circular(10.0),
+                    SizedBox(
+                      width: 300,
+                      child: ElevatedButton(
+                        onPressed: () {},
+                        style: const ButtonStyle(
+                          shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                            borderRadius: BorderRadius.all(Radius.circular(10.0))
+                          )),
+                          padding: MaterialStatePropertyAll(
+                            EdgeInsets.zero,
                           ),
                         ),
-                        leading: Icon(Icons.shopping_bag),
-                        title: Text('Orders'),
-                        trailing: Icon(Icons.arrow_forward),
+                        child: const ListTile(
+                          leading: Icon(Icons.shopping_bag),
+                          title: Text('Orders'),
+                          trailing: Icon(Icons.arrow_forward),
+                        ),
                       ),
                     ),
                     const SizedBox(

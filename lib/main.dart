@@ -13,7 +13,7 @@ import 'package:rental_app/screens/cart/providers/cart_price_cubit.dart';
 import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
 import 'package:rental_app/screens/category/providers/category_provider.dart';
 import 'package:rental_app/screens/category/providers/catgeory_fetched.dart';
-import 'package:rental_app/screens/favorite/providers/favorite_page_cubit.dart';
+import 'package:rental_app/screens/wishlist/providers/wishlist_page_cubit.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
 import 'package:rental_app/screens/search/providers/searched_products_cubit.dart';
@@ -50,8 +50,8 @@ void main() async {
             create: (_) => SearchedProductCubit(),
             lazy: false,
           ),
-          BlocProvider<FavoriteProductPageCubit>(
-            create: (_) => FavoriteProductPageCubit(),
+          BlocProvider<WishlistProductPageCubit>(
+            create: (_) => WishlistProductPageCubit(),
             lazy: false,
           ),
           BlocProvider<ShoppingCartCubit>(

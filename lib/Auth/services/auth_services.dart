@@ -31,7 +31,7 @@ class AuthService {
       name: 'Guest User',
       email: 'guest@example.com',
       isAdmin: false,
-      favoriteProducts: [],
+      wishlistProducts: [],
       addressList: [],
       ordersList: [],
       shoppingCartList: [],
@@ -114,14 +114,23 @@ class AuthService {
       );
       if (context.mounted) {
         final Map<String, dynamic> responseBody = json.decode(response.body);
+        print(responseBody);
         if (response.statusCode != 500) {
           if (response.statusCode == 200) {
-            final userTokenCubit = context.read<UserTokenCubit>();
-            userTokenCubit.saveToken(responseBody['token']);
+            // Update address models
+            List<dynamic> addressMaps = responseBody['user']['addressList'];
+            addressMaps.map((map) => AddressModel.fromMap(map)).toList();
+
+            // Update other user information
             final Map<String, dynamic> userMap = responseBody['user'];
             UserModel user = UserModel.fromMap(userMap);
+
+            final userTokenCubit = context.read<UserTokenCubit>();
+            userTokenCubit.saveToken(responseBody['token']);
+
             final userCubit = context.read<UserCubit>();
             userCubit.setUser(user);
+
             Navigator.of(context).pop();
             showToast(context, responseBody['Status']);
           } else if (response.statusCode == 401) {
@@ -132,6 +141,7 @@ class AuthService {
         }
       }
     } catch (error) {
+      // Handle error
       // print(error);
     }
   }

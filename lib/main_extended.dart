@@ -4,7 +4,7 @@ import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Auth/services/auth_services.dart';
 import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/screens/cart/shopping_cart_page.dart';
-import 'package:rental_app/screens/favorite/favorite_page.dart';
+import 'package:rental_app/screens/wishlist/wishlist_page.dart';
 import 'package:rental_app/screens/home/home_page.dart';
 import 'package:rental_app/screens/account/account_page.dart';
 
@@ -23,8 +23,8 @@ class _MainAppExtendedState extends State<MainAppExtended> {
   Widget build(BuildContext context) {
     List screens = const [
       HomePage(),
-      FavoritePage(),
-      ShoppingCartPage(),
+      WishlistPage(),
+      // ShoppingCartPage(),
       AccountPage(),
     ];
     return BlocBuilder<UserCubit, UserState>(
@@ -101,6 +101,7 @@ class _MainAppExtendedState extends State<MainAppExtended> {
             ),
           );
         } else if (state is UserLoadedState) {
+          print(state.user);
           return Scaffold(
             extendBody: true,
             body: screens[index],
@@ -123,29 +124,29 @@ class _MainAppExtendedState extends State<MainAppExtended> {
                 BlocBuilder<UserCubit, UserState>(builder: (context, state) {
                   UserModel user = (state as UserLoadedState).user;
                   return NavigationDestination(
-                    label: "Favorite",
-                    icon: user.favoriteProducts.isNotEmpty
+                    label: "Wishlist",
+                    icon: user.wishlistProducts.isNotEmpty
                         ? Badge(
-                            label: Text('${user.favoriteProducts.length}'),
+                            label: Text('${user.wishlistProducts.length}'),
                             child: const Icon(Icons.favorite_outline))
                         : const Icon(Icons.favorite_outline),
                     selectedIcon: const Icon(Icons.favorite),
                   );
                 }),
-                BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-                  final userCubit = state as UserLoadedState;
+                // BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+                //   final userCubit = state as UserLoadedState;
 
-                  return NavigationDestination(
-                    label: "Cart",
-                    icon: userCubit.user.shoppingCartList.isNotEmpty
-                        ? Badge(
-                            label: Text(
-                                '${userCubit.user.shoppingCartList.length}'),
-                            child: const Icon(Icons.shopping_cart_outlined))
-                        : const Icon(Icons.shopping_cart_outlined),
-                    selectedIcon: const Icon(Icons.shopping_cart),
-                  );
-                }),
+                //   return NavigationDestination(
+                //     label: "Cart",
+                //     icon: userCubit.user.shoppingCartList.isNotEmpty
+                //         ? Badge(
+                //             label: Text(
+                //                 '${userCubit.user.shoppingCartList.length}'),
+                //             child: const Icon(Icons.shopping_cart_outlined))
+                //         : const Icon(Icons.shopping_cart_outlined),
+                //     selectedIcon: const Icon(Icons.shopping_cart),
+                //   );
+                // }),
                 const NavigationDestination(
                   label: "Account",
                   icon: Icon(Icons.account_circle_outlined),

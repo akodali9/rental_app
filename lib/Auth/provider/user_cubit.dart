@@ -43,13 +43,41 @@ class UserCubit extends Cubit<UserState> {
     emit(UserInitialState());
   }
 
-  Future<void> toggleFavoriteProduct(String productId) async {
+  Future<void> updateAddressListForUser(
+      List<AddressModel> updatedAddressList) async {
+    try {
+      if (state is UserLoadedState) {
+        final UserModel user = (state as UserLoadedState).user;
+
+        // Update the address list in the user model
+        UserModel updatedUser = UserModel(
+          userId: user.userId,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          wishlistProducts: user.wishlistProducts,
+          addressList: updatedAddressList,
+          ordersList: user.ordersList,
+          shoppingCartList: user.shoppingCartList,
+        );
+
+        // Save the updated user data
+        await setUser(updatedUser);
+
+        emit(UserLoadedState(updatedUser)); // Emit the updated state
+      }
+    } catch (error) {
+      // Handle error, e.g., log it or show an error message
+    }
+  }
+
+  Future<void> toggleWishlistProduct(String productId) async {
     try {
       if (state is UserLoadedState) {
         final UserModel user = (state as UserLoadedState).user;
 
         // Toggle favorite status in the user model
-        user.toggleFavoriteProduct(productId);
+        user.toggleWishlistProduct(productId);
 
         // Save the updated user data
         await setUser(user);
@@ -73,7 +101,7 @@ class UserCubit extends Cubit<UserState> {
           name: user.name,
           email: user.email,
           isAdmin: user.isAdmin,
-          favoriteProducts: user.favoriteProducts,
+          wishlistProducts: user.wishlistProducts,
           addressList: user.addressList,
           ordersList: user.ordersList,
           shoppingCartList: updatedShoppingCartList,

@@ -31,7 +31,6 @@ class CategoryServices {
             .map((productData) => Product.fromJson(productData))
             .toList();
         CategoryCubit categoryCubit = context.read<CategoryCubit>();
-        print(products);
         if (products.isEmpty) {
           context.read<CatgeoryFetched>().setCategoryFetchedState(true);
           showToast(context, responseBody['message']);

@@ -3,44 +3,44 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Components/sliver_product_display.dart';
 import 'package:rental_app/models/product_model.dart';
-import 'package:rental_app/screens/favorite/providers/favorite_page_cubit.dart';
-import 'package:rental_app/screens/favorite/services/favorite_services.dart';
+import 'package:rental_app/screens/wishlist/providers/wishlist_page_cubit.dart';
+import 'package:rental_app/screens/wishlist/services/wishlist_services.dart';
 
-class FavoritePage extends StatefulWidget {
-  const FavoritePage({super.key});
+class WishlistPage extends StatefulWidget {
+  const WishlistPage({super.key});
 
   @override
-  State<FavoritePage> createState() => _FavoritePageState();
+  State<WishlistPage> createState() => _WishlistPageState();
 }
 
-class _FavoritePageState extends State<FavoritePage> {
+class _WishlistPageState extends State<WishlistPage> {
   @override
   void initState() {
     super.initState();
   }
 
-  void fetchFavoriteProducts() {
+  void fetchWishlistProducts() {
     final userCubit = BlocProvider.of<UserCubit>(context);
 
     if (userCubit.state is UserLoadedState) {
       UserLoadedState loadedState = userCubit.state as UserLoadedState;
-      FavoriteServices.fetchFavoriteProducts(
-          context, loadedState.user.favoriteProducts);
+      WishlistServices.fetchWishlistProducts(
+          context, loadedState.user.wishlistProducts);
     } else {
       // Handle other states if needed
     }
   }
 
   Future<void> onrefresh() async {
-    context.read<FavoriteProductPageCubit>().resetFavoriteProducts();
-    fetchFavoriteProducts();
+    context.read<WishlistProductPageCubit>().resetWishlistProducts();
+    fetchWishlistProducts();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text("Your Favorites"),
+        title: const Text("Your Wishlist"),
         centerTitle: true,
       ),
       body: BlocBuilder<UserCubit, UserState>(builder: (context, state) {
@@ -48,19 +48,19 @@ class _FavoritePageState extends State<FavoritePage> {
           return const LinearProgressIndicator();
         } else if (state is UserLoadedState) {
           final user = (state).user;
-          FavoriteServices.fetchFavoriteProducts(
-              context, user.favoriteProducts);
-          return BlocBuilder<FavoriteProductPageCubit,
-              FavoriteProductPageState>(
+          return BlocBuilder<WishlistProductPageCubit,
+              WishlistProductPageState>(
             builder: (context, state) {
-              if (state is FavoriteProductPageInitialState) {
+              if (state is WishlistProductPageInitialState) {
+                WishlistServices.fetchWishlistProducts(
+                    context, user.wishlistProducts);
                 return const LinearProgressIndicator();
-              } else if (state is FavoriteProductPageLoadedState) {
-                List<Product> favoriteProducts = state.favoriteProducts;
-                if (favoriteProducts.isEmpty) {
+              } else if (state is WishlistProductPageLoadedState) {
+                List<Product> WishlistProducts = state.WishlistProducts;
+                if (WishlistProducts.isEmpty) {
                   return const Center(
                     child: Text(
-                      "Favorite products to see them here\n😊",
+                      "Wishlist products to see them here\n😊",
                       textAlign: TextAlign.center,
                     ),
                   );
@@ -69,7 +69,7 @@ class _FavoritePageState extends State<FavoritePage> {
                     onRefresh: onrefresh,
                     child: CustomScrollView(
                       slivers: [
-                        sliverProductDisplay(favoriteProducts),
+                        sliverProductDisplay(WishlistProducts),
                         const SliverToBoxAdapter(
                           child: SizedBox(
                             height: 60,

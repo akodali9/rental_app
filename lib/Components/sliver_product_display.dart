@@ -5,7 +5,7 @@ import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/capitalize_first_letter.dart';
 import 'package:rental_app/models/product_model.dart';
 import 'package:rental_app/screens/product_view_page/product_detailed_view.dart';
-import 'package:rental_app/update/favorite_product_update.dart';
+import 'package:rental_app/update/wishlist_product_update.dart';
 
 SliverList sliverProductDisplay(List<Product> products) {
   return SliverList(
@@ -51,7 +51,7 @@ SliverList sliverProductDisplay(List<Product> products) {
                             ),
                             onPressed: () async {
                               UserCubit userCubit = context.read<UserCubit>();
-                              userCubit.toggleFavoriteProduct(
+                              userCubit.toggleWishlistProduct(
                                   products[index].productId);
 
                               UserTokenCubit userTokenCubit =
@@ -64,13 +64,13 @@ SliverList sliverProductDisplay(List<Product> products) {
                                       : '';
                               final userLoadedCubit =
                                   userCubit.state as UserLoadedState;
-                              await updateFavoritesOnServer(
+                              await updateWishlistOnServer(
                                   context,
-                                  userLoadedCubit.user.favoriteProducts,
+                                  userLoadedCubit.user.wishlistProducts,
                                   userToken,
                                   userLoadedCubit.user.userId);
                             },
-                            icon: userState.user.favoriteProducts
+                            icon: userState.user.wishlistProducts
                                     .contains(products[index].productId)
                                 ? const Icon(
                                     Icons.favorite,

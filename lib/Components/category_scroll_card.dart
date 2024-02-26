@@ -72,7 +72,7 @@ class _CategoryScrollCardState extends State<CategoryScrollCard> {
                       borderRadius: BorderRadius.all(Radius.circular(10.0)))),
                   padding: MaterialStatePropertyAll(
                       EdgeInsets.symmetric(horizontal: 8.0)),
-                  fixedSize: MaterialStatePropertyAll(Size(150, 120)),
+                  fixedSize: MaterialStatePropertyAll(Size(150, 110)),
                 ),
                 onPressed: () {
                   Navigator.of(context)

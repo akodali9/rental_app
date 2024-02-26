@@ -1,13 +1,15 @@
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:http/http.dart' as http;
 import 'package:rental_app/functions/logout_user.dart';
 import 'package:rental_app/functions/show_toast.dart';
 import 'package:rental_app/global_variables.dart';
+import 'package:rental_app/screens/wishlist/providers/wishlist_page_cubit.dart';
 
-Future<void> updateFavoritesOnServer(BuildContext context,
+Future<void> updateWishlistOnServer(BuildContext context,
     List<String> favoriteProducts, String token, String userId) async {
-  final String apiUrl = '$uri/user/update-favorites';
+  final String apiUrl = '$uri/user/update-wishlist';
 
   try {
     final response = await http.post(
@@ -25,7 +27,12 @@ Future<void> updateFavoritesOnServer(BuildContext context,
     );
 
     if (response.statusCode == 200) {
-      if (context.mounted) showToast(context, "Updated Favorite Product");
+      if (context.mounted) {
+        WishlistProductPageCubit favoriteProductPageCubit =
+            context.read<WishlistProductPageCubit>();
+        favoriteProductPageCubit.resetWishlistProducts();
+        showToast(context, "Updated Wishlist");
+      }
     } else {
       if (response.statusCode == 401) {
         if (context.mounted) {
