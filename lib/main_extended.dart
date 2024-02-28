@@ -24,7 +24,7 @@ class _MainAppExtendedState extends State<MainAppExtended> {
     List screens = const [
       HomePage(),
       WishlistPage(),
-      // ShoppingCartPage(),
+      ShoppingCartPage(),
       AccountPage(),
     ];
     return BlocBuilder<UserCubit, UserState>(
@@ -101,7 +101,6 @@ class _MainAppExtendedState extends State<MainAppExtended> {
             ),
           );
         } else if (state is UserLoadedState) {
-          print(state.user);
           return Scaffold(
             extendBody: true,
             body: screens[index],
@@ -133,20 +132,20 @@ class _MainAppExtendedState extends State<MainAppExtended> {
                     selectedIcon: const Icon(Icons.favorite),
                   );
                 }),
-                // BlocBuilder<UserCubit, UserState>(builder: (context, state) {
-                //   final userCubit = state as UserLoadedState;
+                BlocBuilder<UserCubit, UserState>(builder: (context, state) {
+                  final userCubit = state as UserLoadedState;
 
-                //   return NavigationDestination(
-                //     label: "Cart",
-                //     icon: userCubit.user.shoppingCartList.isNotEmpty
-                //         ? Badge(
-                //             label: Text(
-                //                 '${userCubit.user.shoppingCartList.length}'),
-                //             child: const Icon(Icons.shopping_cart_outlined))
-                //         : const Icon(Icons.shopping_cart_outlined),
-                //     selectedIcon: const Icon(Icons.shopping_cart),
-                //   );
-                // }),
+                  return NavigationDestination(
+                    label: "Cart",
+                    icon: userCubit.user.shoppingCartList.isNotEmpty
+                        ? Badge(
+                            label: Text(
+                                '${userCubit.user.shoppingCartList.length}'),
+                            child: const Icon(Icons.shopping_cart_outlined))
+                        : const Icon(Icons.shopping_cart_outlined),
+                    selectedIcon: const Icon(Icons.shopping_cart),
+                  );
+                }),
                 const NavigationDestination(
                   label: "Account",
                   icon: Icon(Icons.account_circle_outlined),

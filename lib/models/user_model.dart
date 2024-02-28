@@ -9,7 +9,7 @@ class UserModel {
   final bool isAdmin;
   final List<String> wishlistProducts;
   final List<AddressModel> addressList;
-  final List<Order> ordersList;
+  final List<String> ordersList;
   final List<OrderItem> shoppingCartList;
 
   UserModel({
@@ -31,7 +31,7 @@ class UserModel {
       'isAdmin': isAdmin,
       'wishlistProducts': wishlistProducts,
       'addressList': addressList.map((address) => address.toMap()).toList(),
-      'ordersList': ordersList.map((order) => order.toMap()).toList(),
+      'ordersList': ordersList,
       'shoppingCartList': shoppingCartList,
     };
   }
@@ -51,7 +51,7 @@ class UserModel {
               .toList() ??
           [],
       ordersList: (map['ordersList'] as List<dynamic>?)
-              ?.map((order) => Order.fromMap(order as Map<String, dynamic>))
+              ?.map((order) => order.toString())
               .toList() ??
           [],
       shoppingCartList: (map['shoppingCartList'] as List<dynamic>?)

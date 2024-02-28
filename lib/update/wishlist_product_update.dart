@@ -8,7 +8,7 @@ import 'package:rental_app/global_variables.dart';
 import 'package:rental_app/screens/wishlist/providers/wishlist_page_cubit.dart';
 
 Future<void> updateWishlistOnServer(BuildContext context,
-    List<String> favoriteProducts, String token, String userId) async {
+    List<String> wishlistProducts, String token, String userId) async {
   final String apiUrl = '$uri/user/update-wishlist';
 
   try {
@@ -21,7 +21,7 @@ Future<void> updateWishlistOnServer(BuildContext context,
       body: json.encode(
         {
           'userId': userId,
-          'favoriteProducts': favoriteProducts,
+          'wishlistProducts': wishlistProducts,
         },
       ),
     );

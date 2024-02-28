@@ -4,8 +4,8 @@ import 'package:rental_app/models/product_model.dart';
 class WishlistProductPageCubit extends Cubit<WishlistProductPageState> {
   WishlistProductPageCubit() : super(WishlistProductPageInitialState());
 
-  void loadWishlistProducts(List<Product> WishlistProducts) {
-    emit(WishlistProductPageLoadedState(WishlistProducts));
+  void loadWishlistProducts(List<Product> wishlistProducts) {
+    emit(WishlistProductPageLoadedState(wishlistProducts));
   }
 
   void resetWishlistProducts() {
@@ -20,7 +20,7 @@ class WishlistProductPageInitialState extends WishlistProductPageState {}
 class WishlistProductPageEmptyState extends WishlistProductPageState {}
 
 class WishlistProductPageLoadedState extends WishlistProductPageState {
-  List<Product> WishlistProducts;
+  List<Product> wishlistProducts;
 
-  WishlistProductPageLoadedState(this.WishlistProducts);
+  WishlistProductPageLoadedState(this.wishlistProducts);
 }

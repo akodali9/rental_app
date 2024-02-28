@@ -114,12 +114,11 @@ class AuthService {
       );
       if (context.mounted) {
         final Map<String, dynamic> responseBody = json.decode(response.body);
-        print(responseBody);
         if (response.statusCode != 500) {
           if (response.statusCode == 200) {
             // Update address models
-            List<dynamic> addressMaps = responseBody['user']['addressList'];
-            addressMaps.map((map) => AddressModel.fromMap(map)).toList();
+            // List<dynamic> addressMaps = responseBody['user']['addressList'];
+            // addressMaps.map((map) => AddressModel.fromMap(map)).toList();
 
             // Update other user information
             final Map<String, dynamic> userMap = responseBody['user'];

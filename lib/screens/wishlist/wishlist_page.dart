@@ -56,8 +56,8 @@ class _WishlistPageState extends State<WishlistPage> {
                     context, user.wishlistProducts);
                 return const LinearProgressIndicator();
               } else if (state is WishlistProductPageLoadedState) {
-                List<Product> WishlistProducts = state.WishlistProducts;
-                if (WishlistProducts.isEmpty) {
+                List<Product> wishlistProducts = state.wishlistProducts;
+                if (wishlistProducts.isEmpty) {
                   return const Center(
                     child: Text(
                       "Wishlist products to see them here\n😊",
@@ -69,7 +69,7 @@ class _WishlistPageState extends State<WishlistPage> {
                     onRefresh: onrefresh,
                     child: CustomScrollView(
                       slivers: [
-                        sliverProductDisplay(WishlistProducts),
+                        sliverProductDisplay(wishlistProducts),
                         const SliverToBoxAdapter(
                           child: SizedBox(
                             height: 60,

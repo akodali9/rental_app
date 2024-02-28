@@ -1,6 +1,9 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
+import 'package:rental_app/Components/address_form.dart';
 import 'package:rental_app/functions/alertdialog_customactions.dart';
 import 'package:rental_app/functions/show_toast.dart';
 import 'package:rental_app/models/order_model.dart';
@@ -8,6 +11,7 @@ import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/screens/cart/providers/cart_price_cubit.dart';
 import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
 import 'package:rental_app/screens/cart/services/shopping_services.dart';
+import 'package:rental_app/screens/order/order_confirm_page.dart';
 
 class ShoppingCartPage extends StatefulWidget {
   const ShoppingCartPage({super.key});
@@ -29,6 +33,114 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
           .updateShoppingCart(loadedState.user.shoppingCartList);
     } else {
       // Handle other states if needed
+    }
+  }
+
+  Future<AddressModel?> showAddressSelectionDialog(BuildContext context) async {
+    Completer<AddressModel?> completer = Completer<AddressModel?>();
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        // Implement a dialog or navigate to an address selection page
+        // Return the selected address
+        // For simplicity, let's assume you have a list of addresses in the user's state
+        final userState = context.read<UserCubit>().state;
+        if (userState is UserLoadedState) {
+          final List<AddressModel> addresses = userState.user.addressList;
+          return AlertDialog(
+            alignment: Alignment.center,
+            scrollable: true,
+            title: const Text('Select Address'),
+            content: addresses.isNotEmpty
+                ? Column(
+                    children: addresses.map((address) {
+                      return Container(
+                        margin: const EdgeInsets.symmetric(vertical: 6.0),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey),
+                          borderRadius: BorderRadius.circular(10.0),
+                        ),
+                        child: ListTile(
+                          title: Text(address.street),
+                          subtitle: Text('${address.city}, ${address.state}'),
+                          onTap: () {
+                            Navigator.pop(context);
+                            completer.complete(address);
+                          },
+                        ),
+                      );
+                    }).toList(),
+                  )
+                : const Center(
+                    child: Text('No addresses found'),
+                  ),
+            actions: [
+              TextButton(
+                  onPressed: () async {
+                    showModalBottomSheet(
+                      showDragHandle: true,
+                      isScrollControlled: true,
+                      context: context,
+                      builder: (context) => const AddressForm(),
+                    ).then((value) => {
+                          Navigator.pop(context)
+                          // rentNow(context);
+                        });
+                  },
+                  child: const Text("Add new Address"))
+            ],
+          );
+        }
+        return const SizedBox(); // Handle other user states if needed
+      },
+    );
+
+    return completer.future;
+  }
+
+  void rentNow(BuildContext context) async {
+    try {
+      final shoppingCartState = context.read<ShoppingCartCubit>().state;
+      if (shoppingCartState is ShoppingCartLoadedState) {
+        final shoppingCartList = shoppingCartState.shoppingCartList;
+
+        // Show address selection dialog
+        final selectedAddress = await showAddressSelectionDialog(context);
+
+        // Ensure a valid address is selected
+        if (selectedAddress == null) {
+          // Optionally, show a message to the user indicating that an address is required
+          return;
+        }
+        if (context.mounted) {
+          final userState = context.read<UserCubit>().state;
+          if (userState is UserLoadedState) {
+            final userId = userState.user.userId;
+
+            // Create an order object based on the shopping cart items and the selected address
+            final order = Order(
+              customerId: userId,
+              items: shoppingCartList,
+              totalAmount: calculateTotalCost(shoppingCartList),
+              customerAddress: selectedAddress,
+              status: "Pending",
+              createdAt: DateTime.now(),
+              returnStatus: false,
+            );
+
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => ConfirmOrderPage(order: order),
+              ),
+            );
+          }
+        }
+
+        // Extract userId and other details
+      }
+    } catch (error) {
+      // Handle errors
+      // Optionally, show an error message to the user
     }
   }
 
@@ -201,13 +313,13 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                                 IconButton.filledTonal(
                                                   icon: const Icon(Icons.add),
                                                   onPressed: () {
-                                                    if (item.quantity < 3) {
+                                                    if (item.quantity < 2) {
                                                       ShoppingServices
                                                           .incrementQuantity(
                                                               item, context);
                                                     } else {
                                                       showToast(context,
-                                                          "Quantity of maximum 3 are allowed per order");
+                                                          "Quantity of maximum 2 are allowed per product");
                                                     }
                                                   },
                                                 ),
@@ -257,7 +369,9 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                           ),
                         ),
                       ),
-                      onPressed: () {},
+                      onPressed: () async {
+                        rentNow(context);
+                      },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [

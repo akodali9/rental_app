@@ -1,10 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/functions/alertdialog_customactions.dart';
 import 'package:rental_app/functions/show_toast.dart';
 import 'package:rental_app/screens/address/address_page.dart';
+import 'package:rental_app/screens/order/order_page.dart';
 
 class AccountPage extends StatefulWidget {
   const AccountPage({super.key});
@@ -47,12 +49,13 @@ class _AccountPageState extends State<AccountPage> {
               child: Center(
                 child: Column(
                   children: [
-                    SizedBox(
+                    Container(
                       height: 200,
                       width: 200,
                       child: SvgPicture.asset(
                           'assets/images/profile-circle.svg',
-                          fit: BoxFit.fill),
+                          
+                          fit: BoxFit.fill,),
                     ),
                     Text(
                       'Hello, ${user.name} 😊',
@@ -88,9 +91,10 @@ class _AccountPageState extends State<AccountPage> {
                       width: 300,
                       child: ElevatedButton(
                         style: const ButtonStyle(
-                          shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0))
-                          )),
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)))),
                           padding: MaterialStatePropertyAll(
                             EdgeInsets.zero,
                           ),
@@ -113,11 +117,20 @@ class _AccountPageState extends State<AccountPage> {
                     SizedBox(
                       width: 300,
                       child: ElevatedButton(
-                        onPressed: () {},
+                        onPressed: () {
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => OrdersPage(
+                                  userId: user.userId,
+                                ),
+                              ));
+                        },
                         style: const ButtonStyle(
-                          shape: MaterialStatePropertyAll(RoundedRectangleBorder(
-                            borderRadius: BorderRadius.all(Radius.circular(10.0))
-                          )),
+                          shape: MaterialStatePropertyAll(
+                              RoundedRectangleBorder(
+                                  borderRadius:
+                                      BorderRadius.all(Radius.circular(10.0)))),
                           padding: MaterialStatePropertyAll(
                             EdgeInsets.zero,
                           ),
@@ -132,11 +145,7 @@ class _AccountPageState extends State<AccountPage> {
                     const SizedBox(
                       height: 20,
                     ),
-                    IconButton(
-                      style: ButtonStyle(
-                        backgroundColor:
-                            MaterialStatePropertyAll(Colors.red[100]),
-                      ),
+                    IconButton.filledTonal(
                       onPressed: () {
                         showAlertDialog(context, "Do you want to Logout?", [
                           "Yes",

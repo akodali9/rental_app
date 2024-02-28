@@ -71,6 +71,33 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  Future<void> updateOrdersList(List<String> updatedOrdersList) async {
+    try {
+      if (state is UserLoadedState) {
+        final UserModel user = (state as UserLoadedState).user;
+
+        // Update the orders list in the user model
+        UserModel updatedUser = UserModel(
+          userId: user.userId,
+          name: user.name,
+          email: user.email,
+          isAdmin: user.isAdmin,
+          wishlistProducts: user.wishlistProducts,
+          addressList: user.addressList,
+          ordersList: updatedOrdersList,
+          shoppingCartList: user.shoppingCartList,
+        );
+
+        // Save the updated user data
+        await setUser(updatedUser);
+
+        emit(UserLoadedState(updatedUser)); // Emit the updated state
+      }
+    } catch (error) {
+      // Handle error, e.g., log it or show an error message
+    }
+  }
+
   Future<void> toggleWishlistProduct(String productId) async {
     try {
       if (state is UserLoadedState) {
@@ -114,6 +141,26 @@ class UserCubit extends Cubit<UserState> {
       }
     } catch (error) {
       // Handle error, e.g., log it or show an error message
+    }
+  }
+
+  void clearShoppingCartList() async {
+    if (state is UserLoadedState) {
+      final UserModel user = (state as UserLoadedState).user;
+
+      UserModel updatedUser = UserModel(
+        userId: user.userId,
+        name: user.name,
+        email: user.email,
+        isAdmin: user.isAdmin,
+        wishlistProducts: user.wishlistProducts,
+        addressList: user.addressList,
+        ordersList: user.ordersList,
+        shoppingCartList: [],
+      );
+
+      // Save the updated user data
+      await setUser(updatedUser);
     }
   }
 }

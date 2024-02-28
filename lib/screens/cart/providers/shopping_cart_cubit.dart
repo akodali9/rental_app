@@ -18,6 +18,7 @@ class ShoppingCartCubit extends Cubit<ShoppingCartState> {
 
   void clearShoppingList() {
     emit(ShoppingCartLoadedState([]));
+    
   }
 
   void addItemToCart(

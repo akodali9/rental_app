@@ -16,9 +16,6 @@ class AddressListUpdate {
   ) async {
     final List<Map<String, dynamic>> addressMaps =
         newAddressList.map((address) => address.toMap()).toList();
-    print("before update: $newAddressList");
-    print(userId);
-    print(token);
     final response = await http.post(
       Uri.parse('$uri/user/$userId/addresses'),
       headers: {
@@ -32,7 +29,6 @@ class AddressListUpdate {
       final jsonBody = json.decode(response.body);
       if (context.mounted) {
         showToast(context, jsonBody['message']);
-        print("after update: ${jsonBody['newAddressList']}");
         final List<AddressModel> addressList =
             (jsonBody['newAddressList'] as List<dynamic>).map((addressMap) {
           return AddressModel.fromMap(addressMap);
@@ -43,8 +39,6 @@ class AddressListUpdate {
       }
       return true;
     } else {
-      print(
-          'Failed to update address list. Status code: ${response.statusCode}');
       return false;
     }
   }

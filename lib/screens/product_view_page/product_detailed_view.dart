@@ -24,6 +24,7 @@ class ProductDetailedView extends StatefulWidget {
 class _ProductDetailedViewState extends State<ProductDetailedView> {
   final String heroFavoriteTag = 'herofavorite';
   bool showMoreDetails = false;
+
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<UserCubit, UserState>(
@@ -38,7 +39,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
             floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
             floatingActionButton: FloatingActionButton.extended(
               heroTag: heroFavoriteTag,
-              label: const Text("Favorite"),
+              label: const Text("Wishlist"),
               onPressed: () async {
                 UserCubit userCubit = context.read<UserCubit>();
                 userCubit.toggleWishlistProduct(widget.product.productId);
@@ -293,9 +294,9 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                               if (cartItems != [] && matchedItem == true) {
                                 showToast(context, 'Already added to cart');
                               } else if (cartItems != [] &&
-                                  cartItems.length >= 3) {
+                                  cartItems.length >= 2) {
                                 showToast(context,
-                                    'More than 3 products cannot be added to cart');
+                                    'More than 2 products cannot be added to cart');
                               } else {
                                 final OrderItem item = OrderItem(
                                     productId: widget.product.productId,
@@ -305,6 +306,15 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
 
                                 ShoppingServices.addProduct(item, context);
                               }
+                              // Navigator.push(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //     builder: (context) => ManageOrdersPage(
+                              //       finalOrder:
+                              //           createOrderFromProduct(widget.product),
+                              //     ),
+                              //   ),
+                              // );
                             },
                             style: ButtonStyle(
                               shape: MaterialStatePropertyAll(
@@ -314,7 +324,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                               ),
                             ),
                             icon: const Text(
-                              "Rent now",
+                              "Add to Cart",
                               style: TextStyle(
                                 fontSize: 24,
                                 fontWeight: FontWeight.bold,

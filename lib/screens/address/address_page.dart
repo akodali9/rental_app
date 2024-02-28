@@ -93,6 +93,11 @@ class _AddressPageState extends State<AddressPage> {
                           );
                         }, childCount: user.addressList.length),
                       ),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 80,
+                        ),
+                      )
                     ],
                   )
                 : const Center(

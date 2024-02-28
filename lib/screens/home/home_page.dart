@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
@@ -212,6 +213,11 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                       sliverProductDisplay(products),
+                      const SliverToBoxAdapter(
+                        child: SizedBox(
+                          height: 10,
+                        ),
+                      ),
                       SliverToBoxAdapter(
                         child: BlocBuilder<HomeDataFetchedCubit,
                             HomeDataFetchState>(

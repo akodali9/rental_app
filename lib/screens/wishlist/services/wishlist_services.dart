@@ -10,7 +10,6 @@ import 'package:rental_app/screens/wishlist/providers/wishlist_page_cubit.dart';
 class WishlistServices {
   static Future<void> fetchWishlistProducts(
       BuildContext context, List<String> wishlistProducts) async {
-    print(wishlistProducts);
     try {
       WishlistProductPageCubit wishlistProductPageCubit =
           context.read<WishlistProductPageCubit>();

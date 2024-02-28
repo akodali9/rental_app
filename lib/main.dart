@@ -17,6 +17,7 @@ import 'package:rental_app/screens/wishlist/providers/wishlist_page_cubit.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
 import 'package:rental_app/screens/search/providers/searched_products_cubit.dart';
+import 'package:rental_app/theme/theme.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -86,9 +87,14 @@ class MaterialAPP extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
-          fontFamily: GoogleFonts.poppins().fontFamily,
           brightness: Brightness.light,
-          colorSchemeSeed: Colors.blue[50]),
+          fontFamily: GoogleFonts.poppins().fontFamily,
+          colorScheme: lightTheme),
+      // darkTheme: ThemeData(
+      //   brightness: Brightness.dark,
+      //   fontFamily: GoogleFonts.poppins().fontFamily,
+      //   colorScheme: darkTheme,
+      // ),
       title: "Rental App",
       onGenerateRoute: (routeSettings) => generateRoutes(routeSettings),
       initialRoute: '/',

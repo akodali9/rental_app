@@ -45,7 +45,7 @@ class _CategoryScrollCardState extends State<CategoryScrollCard> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 136,
+      height: 127,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: widget.imgCardList.length,
@@ -88,16 +88,15 @@ class _CategoryScrollCardState extends State<CategoryScrollCard> {
                   children: [
                     Icon(
                       widget.imgCardList[index][2],
-                      size: 60,
-                      color: widget.imgCardList[index][3],
+                      size: 50,
+                      //color: widget.imgCardList[index][3],
                     ),
                     Text(
                       widget.imgCardList[index][0],
                       textAlign: TextAlign.center,
                       style: TextStyle(
-                        color: widget.imgCardList[index][3],
+                        // color: Theme.of(context).bannerTheme.backgroundColor,
                         fontSize: 16,
-                        fontWeight: FontWeight.w600,
                       ),
                     ),
                   ],
