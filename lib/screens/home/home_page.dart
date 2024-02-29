@@ -46,13 +46,13 @@ class HomePage extends StatefulWidget {
       Colors.blueGrey
     ],
     [
-      "kitchen Furniture",
+      "Kitchen Furniture",
       "assets/images/test.jpeg",
       Icons.table_bar,
       Colors.brown
     ],
     [
-      "kitchen Appliances",
+      "Kitchen Appliances",
       "assets/images/test.jpeg",
       Icons.kitchen_outlined,
       Colors.blueGrey
