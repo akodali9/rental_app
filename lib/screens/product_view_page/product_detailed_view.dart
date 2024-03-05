@@ -1,5 +1,6 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
@@ -23,7 +24,9 @@ class ProductDetailedView extends StatefulWidget {
 
 class _ProductDetailedViewState extends State<ProductDetailedView> {
   final String heroFavoriteTag = 'herofavorite';
-  bool showMoreDetails = false;
+  bool showMoreDescription = false;
+
+  bool showProductDetails = false;
 
   @override
   Widget build(BuildContext context) {
@@ -126,155 +129,189 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                         const SizedBox(
                           height: 20,
                         ),
-                        Row(
+                        Column(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          crossAxisAlignment: CrossAxisAlignment.center,
                           children: [
-                            Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
+                            Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
                               children: [
-                                Text(
-                                  capitalizeFirstLetter(widget.product.name),
-                                  style: const TextStyle(
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.bold),
+                                Expanded(
+                                  child: Text(
+                                    capitalizeFirstLetter(widget.product.name),
+                                    style: const TextStyle(
+                                        fontSize: 24,
+                                        fontWeight: FontWeight.bold),
+                                  ),
                                 ),
-                                Text(
-                                  capitalizeFirstLetter(
-                                      widget.product.description),
-                                  maxLines: showMoreDetails ? 20 : 2,
-                                  overflow: TextOverflow.ellipsis,
-                                  style: const TextStyle(
-                                    fontSize: 16,
+                                Card(
+                                  elevation: 3,
+                                  child: SizedBox(
+                                    height: 120,
+                                    width: 120,
+                                    child: Padding(
+                                      padding: const EdgeInsets.all(4.0),
+                                      child: Column(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceEvenly,
+                                        children: [
+                                          Text(
+                                            '${widget.product.price} INR',
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold),
+                                          ),
+                                          const Divider(
+                                              thickness: 2, height: 0),
+                                          const Text(
+                                            'Month',
+                                            style: TextStyle(
+                                              fontSize: 24,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
-                            Card(
-                              elevation: 3,
-                              child: SizedBox(
-                                height: 100,
-                                width: 100,
-                                child: Column(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  children: [
-                                    Text(
-                                      '${widget.product.price} INR',
-                                      style: const TextStyle(
-                                        fontSize: 20,
-                                      ),
-                                    ),
-                                    const Divider(thickness: 2, height: 0),
-                                    const Text(
-                                      'Month',
-                                      style: TextStyle(
-                                        fontSize: 24,
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                            ),
                           ],
                         ),
                         const Divider(),
+                        const Text(
+                          "Description:",
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold, fontSize: 18),
+                        ),
+                        Text(
+                          capitalizeFirstLetter(widget.product.description),
+                          maxLines: showMoreDescription ? 20 : 3,
+                          overflow: TextOverflow.ellipsis,
+                          style: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              showMoreDescription = !showMoreDescription;
+                            });
+                          },
+                          child: Text(
+                            showMoreDescription ? 'Show Less' : 'Show More',
+                            style: const TextStyle(
+                              fontSize: 14,
+                              color: Colors.blue,
+                              decoration: TextDecoration.underline,
+                              decorationColor: Colors.blue,
+                            ),
+                          ),
+                        ),
                         const SizedBox(
                           height: 10,
                         ),
-                        Row(
-                          crossAxisAlignment: CrossAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Column(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                children: [
-                                  Text(
-                                    'Brand: ${capitalizeFirstLetter(widget.product.brand)}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Category: ${capitalizeFirstLetter(widget.product.category)}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  Text(
-                                    'Color: ${capitalizeFirstLetter(widget.product.color)}',
-                                    style: const TextStyle(
-                                      fontSize: 16,
-                                    ),
-                                  ),
-                                  if (widget.product.model != "")
+                        InkWell(
+                          onTap: () {
+                            setState(() {
+                              showProductDetails = !showProductDetails;
+                            });
+                          },
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(vertical: 16.0),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  "Product Details:",
+                                  style: TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18),
+                                ),
+                                showProductDetails
+                                    ? const Icon(
+                                        Icons.remove,
+                                        size: 30,
+                                      )
+                                    : const Icon(
+                                        Icons.add,
+                                        size: 30,
+                                      ),
+                              ],
+                            ),
+                          ),
+                        ),
+                        if (showProductDetails)
+                          Row(
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              Expanded(
+                                child: Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
                                     Text(
-                                      'model: ${capitalizeFirstLetter(widget.product.model)}',
+                                      'Brand: ${capitalizeFirstLetter(widget.product.brand)}',
                                       style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
-                                  if (widget.product.size != "")
                                     Text(
-                                      'Size: ${capitalizeFirstLetter(widget.product.size)}',
+                                      'Category: ${capitalizeFirstLetter(widget.product.category)}',
                                       style: const TextStyle(
                                         fontSize: 16,
                                       ),
                                     ),
-                                  if (showMoreDetails)
-                                    Column(
-                                      crossAxisAlignment:
-                                          CrossAxisAlignment.start,
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.start,
-                                      children: [
-                                        if (widget.product.material != "")
-                                          Text(
+                                    Text(
+                                      'Color: ${capitalizeFirstLetter(widget.product.color)}',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
+                                    ),
+                                    if (widget.product.model != "")
+                                      Text(
+                                        'model: ${capitalizeFirstLetter(widget.product.model)}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    if (widget.product.size != "")
+                                      Text(
+                                        'Size: ${capitalizeFirstLetter(widget.product.size)}',
+                                        style: const TextStyle(
+                                          fontSize: 16,
+                                        ),
+                                      ),
+                                    widget.product.material != '""'
+                                        ? Text(
                                             'Material: ${capitalizeFirstLetter(widget.product.material)}',
                                             style: const TextStyle(
                                               fontSize: 16,
                                             ),
-                                          ),
-                                        Text(
-                                          'In-stock: ${widget.product.itemCount} units',
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                        Text(
-                                          'Other Details: ${widget.product.otherDetails}',
-                                          style: const TextStyle(
-                                            fontSize: 16,
-                                          ),
-                                        ),
-                                      ],
+                                          )
+                                        : const SizedBox(),
+                                    Text(
+                                      'In-stock: ${widget.product.itemCount} units',
+                                      style: const TextStyle(
+                                        fontSize: 16,
+                                      ),
                                     ),
-                                ],
+                                    widget.product.otherDetails != ""
+                                        ? Text(
+                                            'Other Details: \n${widget.product.otherDetails}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                            ),
+                                          )
+                                        : const SizedBox(),
+                                  ],
+                                ),
                               ),
-                            ),
-                          ],
-                        ),
-                        Padding(
-                          padding: const EdgeInsets.symmetric(vertical: 8.0),
-                          child: InkWell(
-                            onTap: () {
-                              setState(() {
-                                showMoreDetails = !showMoreDetails;
-                              });
-                            },
-                            child: Text(
-                              showMoreDetails ? 'Show Less' : 'Show More',
-                              style: const TextStyle(
-                                fontSize: 14,
-                                color: Colors.blue,
-                                decoration: TextDecoration.underline,
-                                decorationColor: Colors.blue,
-                              ),
-                            ),
+                            ],
                           ),
-                        ),
                         Container(
                           margin: const EdgeInsets.symmetric(
-                            vertical: 5,
+                            vertical: 10,
                           ),
                           width: double.infinity,
                           child: IconButton.filledTonal(

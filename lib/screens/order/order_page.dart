@@ -120,7 +120,7 @@ class OrderDetailPage extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildDetailRow('Total Amount',
-                        '\$${order.totalAmount.toStringAsFixed(2)}'),
+                        '${order.totalAmount.toStringAsFixed(2)} INR'),
                     _buildDetailRow('Status', order.status),
                     _buildDetailRow('Created At', order.createdAt.toString()),
                     _buildDetailRow(
@@ -187,7 +187,7 @@ class OrderDetailPage extends StatelessWidget {
         Text(item.productName,
             style: const TextStyle(fontWeight: FontWeight.bold)),
         Text('Quantity: ${item.quantity}'),
-        Text('Price: \$${item.price.toStringAsFixed(2)}'),
+        Text('Price: ${item.price.toStringAsFixed(2)} INR'),
         const SizedBox(height: 8.0),
       ],
     );

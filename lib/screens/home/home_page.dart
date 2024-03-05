@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
@@ -8,7 +7,6 @@ import 'package:rental_app/Components/carousel_widget.dart';
 import 'package:rental_app/Components/category_scroll_card.dart';
 import 'package:rental_app/Components/sliver_product_display.dart';
 import 'package:rental_app/models/product_model.dart';
-// import 'package:rental_app/models/user_model.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
 import 'package:rental_app/screens/home/services/home_services.dart';
@@ -19,8 +17,6 @@ class HomePage extends StatefulWidget {
   static const String routename = '/home';
 
   static List<List> categoryImgcardList = [
-    ["testCategory1", "assets/images/test.jpeg", Icons.abc, Colors.brown],
-    ["testCategory2", "assets/images/test.jpeg", Icons.abc, Colors.brown],
     [
       "Living room Furniture",
       "assets/images/test.jpeg",

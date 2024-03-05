@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
 import 'package:rental_app/Components/address_form.dart';
@@ -247,19 +248,22 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.spaceBetween,
                                       children: [
-                                        Column(
-                                          crossAxisAlignment:
-                                              CrossAxisAlignment.start,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Text(
-                                              item.productName,
-                                              style:
-                                                  const TextStyle(fontSize: 20),
-                                            ),
-                                            Text('Unit: ${item.price} INR'),
-                                          ],
+                                        Expanded(
+                                          child: Column(
+                                            crossAxisAlignment:
+                                                CrossAxisAlignment.start,
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
+                                              Text(
+                                                item.productName,
+                                                style:
+                                                    const TextStyle(fontSize: 20, fontWeight: FontWeight.w500),
+                                              ),
+                                              const SizedBox(height: 10,),
+                                              Text('Unit: ${item.price} INR', style: const TextStyle(fontSize: 16),),
+                                            ],
+                                          ),
                                         ),
                                         Column(
                                           crossAxisAlignment:

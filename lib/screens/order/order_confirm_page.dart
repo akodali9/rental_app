@@ -36,7 +36,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     _buildDetailRow('Total Amount',
-                        '\$${widget.order.totalAmount.toStringAsFixed(2)}'),
+                        '${widget.order.totalAmount.toStringAsFixed(2)} INR'),
                     _buildDetailRow('Status', widget.order.status),
                     _buildDetailRow(
                         'Created At', widget.order.createdAt.toString()),
@@ -120,7 +120,7 @@ class _ConfirmOrderPageState extends State<ConfirmOrderPage> {
         Text(item.productName,
             style: const TextStyle(fontWeight: FontWeight.bold)),
         Text('Quantity: ${item.quantity}'),
-        Text('Price: \$${item.price.toStringAsFixed(2)}'),
+        Text('Price: ${item.price.toStringAsFixed(2)} INR'),
         const SizedBox(height: 8.0),
       ],
     );
