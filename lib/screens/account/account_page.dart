@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
@@ -49,7 +48,7 @@ class _AccountPageState extends State<AccountPage> {
               child: Center(
                 child: Column(
                   children: [
-                    Container(
+                    SizedBox(
                       height: 200,
                       width: 200,
                       child: SvgPicture.asset(

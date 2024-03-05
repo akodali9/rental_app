@@ -1,3 +1,5 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
@@ -11,7 +13,13 @@ SliverList sliverProductDisplay(List<Product> products) {
   return SliverList(
     delegate: SliverChildBuilderDelegate(
       (context, index) {
-        final binaryData = products[index].images[0].data;
+        late final Uint8List binaryData;
+        bool showImage = false;
+        if (products[index].images.isNotEmpty) {
+          binaryData = products[index].images[0].data;
+          showImage = true;
+        }
+
         return InkWell(
           onTap: () {
             Navigator.of(context).push(
@@ -35,9 +43,19 @@ SliverList sliverProductDisplay(List<Product> products) {
                   children: [
                     Stack(
                       children: [
-                        Image.memory(
-                          binaryData,
-                        ),
+                        showImage
+                            ? Image.memory(
+                                binaryData,
+                                width: double.infinity,
+                              )
+                            : const SizedBox(
+                                height: 200,
+                                width: double.infinity,
+                                child: Center(
+                                  child: Text('Error retrieving image',
+                                      style: TextStyle(fontSize: 20)),
+                                ),
+                              ),
                         Positioned(
                           top: 3,
                           right: 3,

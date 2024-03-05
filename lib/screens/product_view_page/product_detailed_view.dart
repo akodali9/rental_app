@@ -1,6 +1,5 @@
 import 'package:card_swiper/card_swiper.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:rental_app/Auth/provider/token_cubit.dart';
 import 'package:rental_app/Auth/provider/user_cubit.dart';
@@ -111,6 +110,9 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                         ),
                       ),
                       itemBuilder: (context, index) {
+                        if (widget.product.images.isEmpty){
+                          return const Center(child: Text("Error retrieving images", style: TextStyle(fontSize: 20),),);
+                        }
                         return Image.memory(
                           widget.product.images[index].data,
                           fit: BoxFit.fill,

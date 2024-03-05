@@ -94,7 +94,7 @@ class _CategoryScrollCardState extends State<CategoryScrollCard> {
                     Text(
                       widget.imgCardList[index][0],
                       textAlign: TextAlign.center,
-                      style: TextStyle(
+                      style: const TextStyle(
                         // color: Theme.of(context).bannerTheme.backgroundColor,
                         fontSize: 16,
                       ),
