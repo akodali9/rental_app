@@ -64,8 +64,10 @@ class _CategoryPageState extends State<CategoryPage> {
                       builder: (context, state) {
                         if (state is CatgeoryFetchedInitialState) {
                           return Padding(
-                            padding: const EdgeInsets.only(
-                                bottom: 10.0, left: 12.0, right: 12.0),
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 12.0,
+                              vertical: 10.0,
+                            ),
                             child: SizedBox(
                               width: 10,
                               height: 50,

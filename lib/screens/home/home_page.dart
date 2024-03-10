@@ -20,7 +20,7 @@ class HomePage extends StatefulWidget {
     [
       "Living room Furniture",
       "assets/images/test.jpeg",
-      Icons.living,
+      Icons.chair,
       Colors.brown,
     ],
     [
@@ -29,12 +29,7 @@ class HomePage extends StatefulWidget {
       Icons.tv,
       Colors.blueGrey
     ],
-    [
-      "Bed room Furniture",
-      "assets/images/test.jpeg",
-      Icons.bed,
-      Colors.brown
-    ],
+    ["Bed room Furniture", "assets/images/test.jpeg", Icons.bed, Colors.brown],
     [
       "Bed room Appliances",
       "assets/images/test.jpeg",
@@ -53,6 +48,12 @@ class HomePage extends StatefulWidget {
       Icons.kitchen_outlined,
       Colors.blueGrey
     ],
+    [
+      "Cleaning Appliances",
+      "assets/images/test.jpeg",
+      Icons.local_laundry_service,
+      Colors.blueGrey
+    ],
   ];
 
   static bool dataFetched = false;
@@ -69,6 +70,7 @@ class _HomePageState extends State<HomePage> {
     if (!HomePage.dataFetched) {
       HomeServices.clearFetchHistory(fetchtoken());
       fetchRandomProducts();
+      fetchOffersList();
     }
   }
 
@@ -85,6 +87,10 @@ class _HomePageState extends State<HomePage> {
   // Function to fetch random products
   void fetchRandomProducts() {
     HomeServices.fetchRandomProducts(2, fetchtoken(), context);
+  }
+
+  void fetchOffersList() {
+    HomeServices.fecthOffers(context);
   }
 
   String searchValue = "";
@@ -108,15 +114,6 @@ class _HomePageState extends State<HomePage> {
       if (state is UserInitialState) {
         return const Scaffold(body: Center(child: CircularProgressIndicator()));
       } else if (state is UserLoadedState) {
-        // final UserModel user = state.user;
-        // if (user.userId == 'guest') {
-        //   // Handle the case where user is null
-        //   return const Scaffold(
-        //     body: Center(
-        //       child: Text("User data is null"),
-        //     ),
-        //   );
-        // }
         AuthService.tokenVerify(context, fetchtoken());
         return Scaffold(
           appBar: AppBar(
@@ -167,7 +164,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               ),
                             ),
-                            Carousel(),
+                            OfferCarousel(),
                           ],
                         ),
                       ),

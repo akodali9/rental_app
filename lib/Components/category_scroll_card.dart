@@ -88,15 +88,17 @@ class _CategoryScrollCardState extends State<CategoryScrollCard> {
                   children: [
                     Icon(
                       widget.imgCardList[index][2],
-                      size: 50,
-                      //color: widget.imgCardList[index][3],
+                      size: 40,
+                      color: widget.imgCardList[index][3],
                     ),
                     Text(
                       widget.imgCardList[index][0],
                       textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        // color: Theme.of(context).bannerTheme.backgroundColor,
-                        fontSize: 16,
+                      style: TextStyle(
+                        fontWeight: FontWeight.w500,
+                        color: Theme.of(context).textTheme.bodyLarge!.color ??
+                            Colors.amber,
+                        fontSize: 16.5,
                       ),
                     ),
                   ],

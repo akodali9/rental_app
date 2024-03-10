@@ -13,6 +13,7 @@ import 'package:rental_app/screens/cart/providers/cart_price_cubit.dart';
 import 'package:rental_app/screens/cart/providers/shopping_cart_cubit.dart';
 import 'package:rental_app/screens/category/providers/category_provider.dart';
 import 'package:rental_app/screens/category/providers/catgeory_fetched.dart';
+import 'package:rental_app/screens/home/providers/offers_cubit.dart';
 import 'package:rental_app/screens/wishlist/providers/wishlist_page_cubit.dart';
 import 'package:rental_app/screens/home/providers/datafetched_completley_cubit.dart';
 import 'package:rental_app/screens/home/providers/home_products_view_cubit.dart';
@@ -70,7 +71,11 @@ void main() async {
           BlocProvider<CatgeoryFetched>(
             create: (_) => CatgeoryFetched(),
             lazy: false,
-          )
+          ),
+          BlocProvider<OffersCubit>(
+            create: (_) => OffersCubit(),
+            lazy: false,
+          ),
         ],
         child: const MaterialAPP(),
       ),
