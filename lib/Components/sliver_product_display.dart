@@ -65,7 +65,7 @@ SliverList sliverProductDisplay(List<Product> products) {
 
                               return IconButton(
                                 style: const ButtonStyle(
-                                  backgroundColor: MaterialStatePropertyAll(
+                                  backgroundColor: WidgetStatePropertyAll(
                                     Colors.black87,
                                   ),
                                 ),

@@ -56,7 +56,7 @@ class _MainAppExtendedState extends State<MainAppExtended> {
                       },
                       style: const ButtonStyle(
                         enableFeedback: true,
-                        elevation: MaterialStatePropertyAll(20.0),
+                        elevation: WidgetStatePropertyAll(20.0),
                       ),
                       icon: const Text(
                         "Login/Signup",
@@ -78,7 +78,7 @@ class _MainAppExtendedState extends State<MainAppExtended> {
                       },
                       style: const ButtonStyle(
                         enableFeedback: true,
-                        elevation: MaterialStatePropertyAll(20.0),
+                        elevation: WidgetStatePropertyAll(20.0),
                       ),
                       child: const Row(
                         mainAxisSize: MainAxisSize.min,

@@ -120,11 +120,11 @@ class _AddressPageState extends State<AddressPage> {
           width: double.infinity,
           child: ElevatedButton(
             style: const ButtonStyle(
-              fixedSize: MaterialStatePropertyAll(
+              fixedSize: WidgetStatePropertyAll(
                 Size(20, 50),
               ),
-              elevation: MaterialStatePropertyAll(10),
-              shape: MaterialStatePropertyAll(
+              elevation: WidgetStatePropertyAll(10),
+              shape: WidgetStatePropertyAll(
                 RoundedRectangleBorder(
                   borderRadius: BorderRadius.all(
                     Radius.circular(10.0),

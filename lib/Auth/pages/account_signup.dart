@@ -170,7 +170,7 @@ class _SignupState extends State<Signup> {
               },
               style: const ButtonStyle(
                 enableFeedback: true,
-                elevation: MaterialStatePropertyAll(20.0),
+                elevation: WidgetStatePropertyAll(20.0),
               ),
               icon: const Row(
                 mainAxisAlignment: MainAxisAlignment.center,
@@ -196,7 +196,7 @@ class _SignupState extends State<Signup> {
             },
             style: const ButtonStyle(
               enableFeedback: true,
-              elevation: MaterialStatePropertyAll(20.0),
+              elevation: WidgetStatePropertyAll(20.0),
             ),
             icon: const Row(
               mainAxisSize: MainAxisSize.min,

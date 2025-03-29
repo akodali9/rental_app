@@ -75,8 +75,8 @@ class _CategoryPageState extends State<CategoryPage> {
                                 style: ButtonStyle(
                                     enableFeedback: true,
                                     elevation:
-                                        const MaterialStatePropertyAll(5),
-                                    shape: MaterialStatePropertyAll(
+                                        const WidgetStatePropertyAll(5),
+                                    shape: WidgetStatePropertyAll(
                                         RoundedRectangleBorder(
                                             borderRadius:
                                                 BorderRadius.circular(10.0)))),

@@ -365,8 +365,8 @@ class _ShoppingCartPageState extends State<ShoppingCartPage> {
                     height: 60,
                     child: ElevatedButton(
                       style: ButtonStyle(
-                        elevation: const MaterialStatePropertyAll(10),
-                        shape: MaterialStatePropertyAll(
+                        elevation: const WidgetStatePropertyAll(10),
+                        shape: WidgetStatePropertyAll(
                           RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10.0),
                           ),

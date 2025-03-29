@@ -186,9 +186,9 @@ class AddressFormState extends State<AddressForm> {
                 width: 20,
                 child: ElevatedButton(
                   style: const ButtonStyle(
-                      fixedSize: MaterialStatePropertyAll(Size(20, 50)),
-                      elevation: MaterialStatePropertyAll(10),
-                      shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                      fixedSize: WidgetStatePropertyAll(Size(20, 50)),
+                      elevation: WidgetStatePropertyAll(10),
+                      shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.all(Radius.circular(10.0))))),
                   onPressed: () async {

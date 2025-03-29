@@ -68,11 +68,11 @@ class _CategoryScrollCardState extends State<CategoryScrollCard> {
               ),
               child: ElevatedButton(
                 style: const ButtonStyle(
-                  shape: MaterialStatePropertyAll(RoundedRectangleBorder(
+                  shape: WidgetStatePropertyAll(RoundedRectangleBorder(
                       borderRadius: BorderRadius.all(Radius.circular(10.0)))),
-                  padding: MaterialStatePropertyAll(
+                  padding: WidgetStatePropertyAll(
                       EdgeInsets.symmetric(horizontal: 8.0)),
-                  fixedSize: MaterialStatePropertyAll(Size(150, 110)),
+                  fixedSize: WidgetStatePropertyAll(Size(150, 110)),
                 ),
                 onPressed: () {
                   Navigator.of(context)

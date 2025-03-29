@@ -59,8 +59,8 @@ class _OrdersPageState extends State<OrdersPage> {
                         ),
                         ElevatedButton(
                           style: ButtonStyle(
-                            elevation: const MaterialStatePropertyAll(5.0),
-                            shape: MaterialStatePropertyAll(
+                            elevation: const WidgetStatePropertyAll(5.0),
+                            shape: WidgetStatePropertyAll(
                               
                               RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(10.0),

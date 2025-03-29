@@ -356,7 +356,7 @@ class _ProductDetailedViewState extends State<ProductDetailedView> {
                               // );
                             },
                             style: ButtonStyle(
-                              shape: MaterialStatePropertyAll(
+                              shape: WidgetStatePropertyAll(
                                 RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
                                 ),

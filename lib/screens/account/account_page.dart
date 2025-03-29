@@ -90,11 +90,11 @@ class _AccountPageState extends State<AccountPage> {
                       width: 300,
                       child: ElevatedButton(
                         style: const ButtonStyle(
-                          shape: MaterialStatePropertyAll(
+                          shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)))),
-                          padding: MaterialStatePropertyAll(
+                          padding: WidgetStatePropertyAll(
                             EdgeInsets.zero,
                           ),
                         ),
@@ -126,11 +126,11 @@ class _AccountPageState extends State<AccountPage> {
                               ));
                         },
                         style: const ButtonStyle(
-                          shape: MaterialStatePropertyAll(
+                          shape: WidgetStatePropertyAll(
                               RoundedRectangleBorder(
                                   borderRadius:
                                       BorderRadius.all(Radius.circular(10.0)))),
-                          padding: MaterialStatePropertyAll(
+                          padding: WidgetStatePropertyAll(
                             EdgeInsets.zero,
                           ),
                         ),
